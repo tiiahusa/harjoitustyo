@@ -15,7 +15,7 @@
             android:name=".AddNewLutemon"
             android:exported="false" />
         <activity
-            android:name=".Home"
+            android:name=".HomeView"
             android:exported="false" />
         <activity
             android:name=".TrainingArea"

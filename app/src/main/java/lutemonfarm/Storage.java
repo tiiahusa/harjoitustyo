@@ -1,11 +1,7 @@
-package com.example.lutemonit;
+package lutemonfarm;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
-import lutemonfarm.Lutemon;
 
 public class Storage {
 

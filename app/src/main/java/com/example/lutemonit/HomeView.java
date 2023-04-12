@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import java.util.ArrayList;
 import lutemonfarm.Lutemon;
+import lutemonfarm.Storage;
 
-public class Home extends AppCompatActivity {
+public class HomeView extends AppCompatActivity {
 
     Storage storage;
     ArrayList<Lutemon> lutemons;

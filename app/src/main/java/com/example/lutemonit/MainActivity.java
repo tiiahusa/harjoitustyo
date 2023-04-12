@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void GoToHome(View view) {
-        Intent intent = new Intent(this, Home.class);
+        Intent intent = new Intent(this, HomeView.class);
         startActivity(intent);
     }
 }

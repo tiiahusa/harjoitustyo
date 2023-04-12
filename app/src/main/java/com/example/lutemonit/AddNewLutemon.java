@@ -15,6 +15,7 @@ import lutemonfarm.Green;
 import lutemonfarm.Lutemon;
 import lutemonfarm.Orange;
 import lutemonfarm.Pink;
+import lutemonfarm.Storage;
 import lutemonfarm.White;
 
 public class AddNewLutemon extends AppCompatActivity {
