@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
+    android:foregroundGravity="bottom"
+    android:orientation="horizontal"
+    tools:context=".Home">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#830E626E"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:minWidth="300dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tbLutemonsName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:text="Lutemon"
+                android:textSize="28sp" />
+
+            <TextView
+                android:id="@+id/tbAttackPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:text="Taistelupisteet:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tbDefensePoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:text="Puolustuspisteet:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tbExperiencePoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:text="Kokemuspisteet:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tbHealthPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:text="Elämä:"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imgRemove"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:src="@drawable/training" />
+
+            <ImageView
+                android:id="@+id/imgEdit"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:src="@drawable/fight" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
