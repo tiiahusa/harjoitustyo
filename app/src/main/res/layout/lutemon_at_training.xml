@@ -10,17 +10,17 @@
     app:cardCornerRadius="10dp"
     app:cardElevation="5dp"
     app:contentPadding="10dp"
-    tools:context=".HomeView">
+    tools:context=".TrainingView">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#830E626E"
+        android:background="#EDE2AC"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="150dp"
+            android:layout_height="100dp"
             android:minWidth="300dp"
             android:orientation="vertical">
 
@@ -33,42 +33,25 @@
                 android:textSize="28sp" />
 
             <TextView
-                android:id="@+id/tbAttackPoints"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:text="Taistelupisteet:"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tbDefensePoints"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:text="Puolustuspisteet:"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tbExperiencePoints"
+                android:id="@+id/tbExperience"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:text="Kokemuspisteet:"
                 android:textSize="18sp" />
-
             <TextView
-                android:id="@+id/tbHealthPoints"
+                android:id="@+id/tbArriveTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
-                android:text="Elämä:"
+                android:text="Saapumisaika:"
                 android:textSize="18sp" />
 
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="50dp"
+            android:layout_width="75dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:gravity="center_vertical"
@@ -78,13 +61,8 @@
                 android:id="@+id/imgHome"
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
-                android:src="@drawable/training" />
+                android:src="@drawable/home" />
 
-            <ImageView
-                android:id="@+id/imgEdit"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
-                android:src="@drawable/fight" />
         </LinearLayout>
 
     </LinearLayout>

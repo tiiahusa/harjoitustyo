@@ -1,13 +1,14 @@
 package areas;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import lutemonfarm.Lutemon;
 
 public class HomeArea {
 
     private static HomeArea area = null; // Only one storage can be created
-    private ArrayList<Lutemon> lutemons = new ArrayList<>();
+    private HashMap<Integer, Lutemon> lutemons = new HashMap<>();
 
     private HomeArea () { // Singleton setting, thats why this is private method
 
@@ -19,4 +20,14 @@ public class HomeArea {
         }
         return area;
     }
+
+    public void AddLutemonToHome(Lutemon lutemon) {
+        lutemons.put(lutemon.getId(), lutemon);
+    }
+
+    public void GetLutemonFromHome (Lutemon lutemon) {
+        lutemons.remove(lutemon.getId(), lutemon);
+    }
+
+
 }
