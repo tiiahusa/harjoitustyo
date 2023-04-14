@@ -19,13 +19,26 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imgTrainingToHome"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/home" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="100dp"
-            android:minWidth="300dp"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tbLutemonsName"
+                android:id="@+id/tbLutemonsNameTraining"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -39,31 +52,18 @@
                 android:layout_marginLeft="25dp"
                 android:text="Kokemuspisteet:"
                 android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/tbArriveTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:text="Saapumisaika:"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="75dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/imgHome"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
-                android:src="@drawable/home" />
-
-        </LinearLayout>
 
     </LinearLayout>
 

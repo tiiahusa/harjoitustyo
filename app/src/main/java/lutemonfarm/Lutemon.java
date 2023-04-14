@@ -1,9 +1,14 @@
 package lutemonfarm;
 
+import android.os.Build;
+
+import java.time.LocalDateTime;
+
 public class Lutemon {
 
     protected String name, color;
     protected int attack, defense, experience, health, maxHealth, id, wins, losses, statement;
+    protected LocalDateTime trainingTime;
     private static int idCounter = 1;
 
     public Lutemon(String name, String color, int attack, int defense, int experience, int maxHealth) {
@@ -20,6 +25,31 @@ public class Lutemon {
         this.statement = 0;
     }
 
+    public void setWin() {
+        this.wins++;
+    }
+
+    public void setLoss() {
+        this.losses++;
+    }
+
+    public void setStatement(int statement) {
+        this.statement = statement;
+    }
+
+    public int getStatement() {
+        return statement;
+    }
+
+    public void setTrainingTime() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            trainingTime = LocalDateTime.now();
+        }
+    }
+
+    public LocalDateTime getTrainingTime() {
+        return trainingTime;
+    }
 
     private int getNewId() { // Give lutemons id and grow for one every time
         return idCounter++;
@@ -65,10 +95,5 @@ public class Lutemon {
         return losses;
     }
 
-    public String goToTraining(Lutemon lutemon) {
-        // Check first that Training area id free to go
 
-
-        return "";
-    }
 }

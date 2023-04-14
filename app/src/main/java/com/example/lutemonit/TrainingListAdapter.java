@@ -4,17 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
-
-import areas.BattleArea;
-import areas.TrainingArea;
 import lutemonfarm.Lutemon;
+import lutemonfarm.Storage;
 
 public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListHolder> {
 
@@ -34,9 +32,18 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListHolder
     public void onBindViewHolder(@NonNull TrainingListHolder holder, int position) { // Set card item's texts and image
         holder.name.setText(items.get(position).getName() + "  (" + items.get(position).getColor() + ")");
         holder.experience.setText("Kokemuspisteet: " + items.get(position).getExperience());
-        holder.time.setText("Lutemoni saapui treeniin: " + TrainingArea.getInstance().GetLutemonsArriveTime(items.get(position)));
+        holder.time.setText("Lutemoni saapui treeniin: " + items.get(position).getTrainingTime());
         System.out.println(items.get(position).getName() + items.get(position).getAttack() + items.get(position).getDefense());
 
+        // Add click-listener to Go To Training -button
+        holder.train.setOnClickListener(view -> {
+            int pos = holder.getAdapterPosition();
+            // get right lutemon to list
+            Lutemon lutemon = items.get(pos);
+            // Move lutemon to home
+            Storage.getInstance().setLutemonToHome(lutemon);
+            notifyItemRemoved(pos);
+        });
     }
 
     @Override
@@ -48,26 +55,17 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListHolder
 class TrainingListHolder extends RecyclerView.ViewHolder {
 
     TextView name, experience, time; // create items for textViews
+    ImageView train;
     private TrainingListAdapter adapter;
-    Context context;
 
     public TrainingListHolder(@NonNull View itemView) { // Holder link view and code together
         super(itemView);
 
-        name = itemView.findViewById(R.id.tbLutemonsName); // link TextViews to code
-        experience = itemView.findViewById(R.id.tbExperiencePoints);
+        name = itemView.findViewById(R.id.tbLutemonsNameTraining); // link TextViews to code
+        experience = itemView.findViewById(R.id.tbExperience);
         time = itemView.findViewById(R.id.tbArriveTime);
+        train = itemView.findViewById(R.id.imgTrainingToHome);
 
-        // Add click-listener to Go ToHome -button
-        itemView.findViewById(R.id.btnHome).setOnClickListener(view -> {
-            // get right lutemon to list
-            Lutemon lutemon = adapter.items.get(getAdapterPosition());
-            // Get Lutemon to Training Area
-            TrainingArea.getInstance().GetLutemonFromTrainingArea(lutemon);
-            // Information to user that lutemon is deleted
-            Toast.makeText(context,"Lutemon " + lutemon.getName() + " keskeyttää treenin ja palaa kotiin!",Toast.LENGTH_LONG).show();
-
-        });
 
     }
 

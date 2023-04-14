@@ -9,10 +9,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
-import areas.BattleArea;
-import areas.HomeArea;
-import areas.TrainingArea;
 import lutemonfarm.Black;
 import lutemonfarm.Green;
 import lutemonfarm.Lutemon;
@@ -28,7 +24,6 @@ public class AddNewLutemon extends AppCompatActivity {
     private Context context;
     private Lutemon lutemon;
     private Storage storage;
-    private HomeArea home;
 
 
     @Override
@@ -42,7 +37,6 @@ public class AddNewLutemon extends AppCompatActivity {
 
         context = AddNewLutemon.this;
         storage = Storage.getInstance();
-        home = HomeArea.getInstance();
 
     }
 
@@ -69,7 +63,6 @@ public class AddNewLutemon extends AppCompatActivity {
                         break;
                 }
                 storage.AddLutemon(lutemon); // Add lutemon to storage
-                home.AddLutemonToHome(lutemon); // Add lutemon to home
                 // Go back to main page
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);

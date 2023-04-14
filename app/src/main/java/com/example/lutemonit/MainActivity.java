@@ -22,8 +22,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void GoToTraining(View view) {
+        Intent intent = new Intent(this, TrainingView.class);
+        startActivity(intent);
+    }
+
     public void GoToHome(View view) {
         Intent intent = new Intent(this, HomeView.class);
         startActivity(intent);
     }
+
+
 }

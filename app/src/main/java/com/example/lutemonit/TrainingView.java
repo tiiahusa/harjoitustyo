@@ -3,17 +3,13 @@ package com.example.lutemonit;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
-
 import java.util.ArrayList;
-
 import lutemonfarm.Lutemon;
 import lutemonfarm.Storage;
 
 public class TrainingView extends AppCompatActivity {
 
-    private Storage storage;
     private ArrayList<Lutemon> lutemons = new ArrayList<>();
 
     @Override
@@ -22,8 +18,7 @@ public class TrainingView extends AppCompatActivity {
         setContentView(R.layout.activity_training);
 
         //Create storage if null and get lutemons to storage
-        storage = Storage.getInstance();
-        lutemons = storage.getLutemons();
+        lutemons = Storage.getInstance().getLutemonsFromTraining();
 
         // Link recyclerview to code and start it
         RecyclerView recyclerView = findViewById(R.id.rvLutemonsAtTraining);

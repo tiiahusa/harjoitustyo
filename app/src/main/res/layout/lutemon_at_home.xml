@@ -75,13 +75,13 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imgHome"
+                android:id="@+id/imgHomeToTraining"
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
                 android:src="@drawable/training" />
 
             <ImageView
-                android:id="@+id/imgEdit"
+                android:id="@+id/imgHomeToBattle"
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
                 android:src="@drawable/fight" />
