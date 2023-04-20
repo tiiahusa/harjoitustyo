@@ -6,32 +6,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
+
 import lutemonfarm.Lutemon;
 import lutemonfarm.Storage;
 
-public class HomeListAdapter extends RecyclerView.Adapter<HomeListHolder> {
+public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> {
 
-    ArrayList<Lutemon> items;
-    Context context;
+    private ArrayList<Lutemon> list;
+    private Context context;
 
-    public HomeListAdapter(ArrayList<Lutemon> items) {
-        this.items = items;
+    public ListAdapter(Context context, ArrayList<Lutemon> list) {
+        this.list = list;
+        this.context = context;
     }
+
     @NonNull
     @Override
-    public HomeListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { // Create recyclerview list
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lutemon_at_home, parent, false); // Choose card view
-        return new HomeListHolder(view).linkAdapter(this); // link items to card
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.lutemon_at_home, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeListHolder holder, int position) { // Set card item's texts and image
-        Lutemon lutemon = items.get(position);
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
+        Lutemon lutemon = list.get(position);
         holder.pic.setImageResource(lutemon.getPic());
         holder.name.setText(lutemon.getName() + "  (" + lutemon.getColor() + ")");
         holder.attack.setText("Taistelupisteet: " + lutemon.getAttack());
@@ -44,7 +46,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListHolder> {
         holder.battle.setOnClickListener(view -> {
             int pos = holder.getAdapterPosition();
             // get right lutemon to list
-            Lutemon lut = items.get(pos);
+            Lutemon lut = list.get(pos);
             // Try add it to the battle area
             boolean x = Storage.getInstance().setLutemonToBattle(lut);
             if(x) { // if Success
@@ -56,7 +58,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListHolder> {
         holder.training.setOnClickListener(view -> {
             int pos = holder.getAdapterPosition();
             // get right lutemon to list
-            Lutemon lut = items.get(pos);
+            Lutemon lut = list.get(pos);
             // Try add it to the battle area
             boolean x = Storage.getInstance().setLutemonToTraining(lut);
             if(x) { // if Success
@@ -69,33 +71,31 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListHolder> {
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return list.size();
+    }
+
+    static class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView name, attack, defense, experience, health; // create items for textViews
+        ImageView training, battle, pic;
+        private ListAdapter adapter;
+
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            name = itemView.findViewById(R.id.tbLutemonsName); // link TextViews to code
+            attack = itemView.findViewById(R.id.tbAttackPoints);
+            defense = itemView.findViewById(R.id.tbDefensePoints);
+            experience = itemView.findViewById(R.id.tbExperiencePoints);
+            health = itemView.findViewById(R.id.tbHealthPoints);
+            training = itemView.findViewById(R.id.imgHomeToTraining);
+            battle = itemView.findViewById(R.id.imgHomeToBattle);
+            pic = itemView.findViewById(R.id.imgLutemon);
+        }
+
+        public MyViewHolder linkAdapter(ListAdapter adapter) {
+            this.adapter = adapter;
+            return this;
+        }
     }
 }
 
-class HomeListHolder extends RecyclerView.ViewHolder {
-
-    TextView name, attack, defense, experience, health; // create items for textViews
-    ImageView training, battle, pic;
-    private HomeListAdapter adapter;
-
-
-    public HomeListHolder(@NonNull View itemView) { // Holder link view and code together
-        super(itemView);
-
-        name = itemView.findViewById(R.id.tbLutemonsName); // link TextViews to code
-        attack = itemView.findViewById(R.id.tbAttackPoints);
-        defense = itemView.findViewById(R.id.tbDefensePoints);
-        experience = itemView.findViewById(R.id.tbExperiencePoints);
-        health = itemView.findViewById(R.id.tbHealthPoints);
-        training = itemView.findViewById(R.id.imgHomeToTraining);
-        battle = itemView.findViewById(R.id.imgHomeToBattle);
-        pic = itemView.findViewById(R.id.imgLutemon);
-
-    }
-
-    public HomeListHolder linkAdapter(HomeListAdapter adapter) {
-        this.adapter = adapter;
-        return this;
-    }
-}

@@ -18,6 +18,9 @@
             android:name=".HomeView"
             android:exported="false" />
         <activity
+            android:name=".HomeViewer"
+            android:exported="false" />
+        <activity
             android:name=".TrainingView"
             android:exported="false" />
         <activity

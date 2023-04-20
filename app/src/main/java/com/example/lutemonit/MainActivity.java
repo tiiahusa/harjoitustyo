@@ -28,8 +28,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void GoToHome(View view) {
-        Intent intent = new Intent(this, HomeView.class);
+        Intent intent = new Intent(this, HomeViewer.class);
         startActivity(intent);
+    }
+
+    public void GoToBattle(View view) {
+
     }
 
 

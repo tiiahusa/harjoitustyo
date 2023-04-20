@@ -2,12 +2,14 @@ package lutemonfarm;
 
 import android.os.Build;
 
+import com.example.lutemonit.R;
+
 import java.time.LocalDateTime;
 
 public class Lutemon {
 
     protected String name, color;
-    protected int attack, defense, experience, health, maxHealth, id, wins, losses, statement;
+    protected int attack, defense, experience, health, maxHealth, id, wins, losses, statement, pic;
     protected LocalDateTime trainingTime;
     private static int idCounter = 1;
 
@@ -23,6 +25,32 @@ public class Lutemon {
         this.losses = 0;
         id = getNewId();
         this.statement = 0;
+        setPicture(color);
+    }
+
+    private void setPicture(String color) {
+        switch (color) { // get color by string
+            case "Musta": // if it is black, create black lutemon picture
+                this.pic = R.drawable.black;
+                break;
+            case "Vihreä": // if it is green, create green lutemon picture
+                this.pic = R.drawable.green;
+                break;
+            case "Oranssi": // if it is orange, create orange lutemon picture
+                this.pic = R.drawable.orange;
+                break;
+            case "Pinkki": // if it is pink, create pink lutemon picture
+                this.pic = R.drawable.pink;
+                break;
+            case "Valkoinen": // if it is white, create white lutemon picture
+                this.pic = R.drawable.white;
+                break;
+
+            default:
+                this.pic = R.drawable.black;
+                break;
+
+        }
     }
 
     public void setWin() {
@@ -85,6 +113,9 @@ public class Lutemon {
 
     public int getMaxHealth() {
         return maxHealth;
+    }
+    public int getPic() {
+        return pic;
     }
 
     public int getWins() {

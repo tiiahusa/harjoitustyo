@@ -19,9 +19,22 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/imgLutemon"
+                tools:srcCompat="@tools:sample/avatars"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="150dp"
-            android:minWidth="300dp"
+            android:minWidth="220dp"
             android:orientation="vertical">
 
             <TextView

@@ -61,6 +61,11 @@ public class AddNewLutemon extends AppCompatActivity {
                     case R.id.rbWhite: // if it is white, create white lutemon
                         lutemon = new White(tbLutemonsName.getText().toString(), "Valkoinen");
                         break;
+
+                        default:
+                            lutemon = new Black(tbLutemonsName.getText().toString(), "Musta");
+                            break;
+
                 }
                 storage.AddLutemon(lutemon); // Add lutemon to storage
                 // Go back to main page
