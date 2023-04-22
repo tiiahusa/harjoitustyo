@@ -29,6 +29,8 @@ public class BattleActivity extends AppCompatActivity {
     Context context;
     private static Integer[] baseFactor = {0, 25, 50, 75, 100};
     private int percentA, percentB;
+    Lutemon first, second;
+    String mapText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,18 +200,37 @@ public class BattleActivity extends AppCompatActivity {
 
         // Lutemons order is random, generator allot which one is first and witch second
         int lutemonSequence = RandomGenerator(2);
-        Lutemon first = lutemons.remove(lutemonSequence);
-        Lutemon second = lutemons.remove(0);
+        first = lutemons.remove(lutemonSequence);
+        second = lutemons.remove(0);
 
+        BattleStorage battleStorage = BattleStorage.getInstance();
+        battleStorage.startNewBattle(first, second);
 
         // Start battle!! While goes until firts or second lutemon health is zero
         while(first.getHealth() > 0 && second.getHealth() > 0) {
+
             first.attack(second, percentA); // first lutemon attack to second one
-            System.out.println(first.getName() + " hyökkää ja " + second.getName() + " puolustautuu!");
-            System.out.println("Ekan elämät " + first.getHealth() + " ja tokan elämät " + second.getHealth());
+            mapText = first.getName() + " hyökkää ja " + second.getName() + " puolustautuu!";
+            battleStorage.addFight(mapText, first);
+            System.out.println(mapText);
+            try {
+                Thread.sleep(3000);
+            }  catch (InterruptedException e) {
+                System.err.println(e.getMessage());
+                throw new RuntimeException(e);
+            }
+
             second.attack(first, percentB);
-            System.out.println(second.getName() + " hyökkää ja " + first.getName() + " puolustautuu!");
-            System.out.println("Ekan elämät " + first.getHealth() + " ja tokan elämät " + second.getHealth());
+            mapText = second.getName() + " hyökkää ja " + first.getName() + " puolustautuu!";
+            battleStorage.addFight(mapText, second);
+            System.out.println(mapText);
+            try {
+                Thread.sleep(3000);
+            }  catch (InterruptedException e) {
+                System.err.println(e.getMessage());
+                throw new RuntimeException(e);
+            }
+
         }
 
         System.out.println("Taistelu loppui!!");
