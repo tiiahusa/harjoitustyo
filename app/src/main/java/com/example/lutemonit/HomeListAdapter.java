@@ -1,6 +1,8 @@
 package com.example.lutemonit;
 
+import android.app.Activity;
 import android.content.Context;
+import android.nfc.cardemulation.CardEmulation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import lutemonfarm.Lutemon;
@@ -17,9 +20,9 @@ import lutemonfarm.Storage;
 public class HomeListAdapter extends RecyclerView.Adapter<HomeListHolder> {
 
     ArrayList<Lutemon> items;
-    Context context;
 
     public HomeListAdapter(ArrayList<Lutemon> items) {
+
         this.items = items;
     }
     @NonNull
@@ -48,10 +51,13 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListHolder> {
             // Try add it to the battle area
             boolean x = Storage.getInstance().setLutemonToBattle(lut);
             if(x) { // if Success
-                //Toast.makeText(context,"Lutemon " + lutemon.getName() + " lisätty taisteluareenalle!",Toast.LENGTH_LONG).show();
+                holder.transfer.setVisibility(View.GONE);
                 notifyItemRemoved(pos);
-            } //else Toast.makeText(context, "Taisteluareena täynnä, lutemonia ei lisätty!", Toast.LENGTH_LONG).show(); //Not success
+            } else {
+                holder.transfer.setVisibility(View.VISIBLE);
+            }
         });
+
         // Add click-listener to Go To Training -button
         holder.training.setOnClickListener(view -> {
             int pos = holder.getAdapterPosition();
@@ -60,9 +66,10 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListHolder> {
             // Try add it to the battle area
             boolean x = Storage.getInstance().setLutemonToTraining(lut);
             if(x) { // if Success
-                //Toast.makeText(context,"Lutemon " + lutemon.getName() + " lähti treeneihin!",Toast.LENGTH_LONG).show();
                 notifyItemRemoved(pos);
-            } //else Toast.makeText(context, "Treenisali täynnä, lutemoni " + lutemon.getName() + " jäi kotia ihmettelemään!", Toast.LENGTH_LONG).show(); //Not success
+            } else {
+                holder.transfer.setVisibility(View.VISIBLE);
+            }
         });
 
     }
@@ -75,7 +82,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListHolder> {
 
 class HomeListHolder extends RecyclerView.ViewHolder {
 
-    TextView name, attack, defense, experience, health; // create items for textViews
+    TextView name, attack, defense, experience, health, transfer; // create items for textViews
     ImageView training, battle, pic;
     private HomeListAdapter adapter;
 
@@ -91,6 +98,7 @@ class HomeListHolder extends RecyclerView.ViewHolder {
         training = itemView.findViewById(R.id.imgHomeToTraining);
         battle = itemView.findViewById(R.id.imgHomeToBattle);
         pic = itemView.findViewById(R.id.imgLutemon);
+        transfer = itemView.findViewById(R.id.lblTransferFalse);
 
     }
 

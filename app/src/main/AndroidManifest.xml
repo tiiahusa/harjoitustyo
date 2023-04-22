@@ -12,6 +12,9 @@
         android:theme="@style/Theme.Lutemonit"
         tools:targetApi="31">
         <activity
+            android:name=".BattleActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddNewLutemon"
             android:exported="false" />
         <activity

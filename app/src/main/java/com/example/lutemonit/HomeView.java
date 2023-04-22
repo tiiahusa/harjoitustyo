@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import java.util.ArrayList;
 import lutemonfarm.Lutemon;
@@ -13,6 +14,7 @@ public class HomeView extends AppCompatActivity {
 
     Storage storage;
     ArrayList<Lutemon> lutemons;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -5,4 +5,8 @@ public class Black extends Lutemon{
         super(name, color, 9, 0, 0, 16);
 
     }
+
+    public int getMaxHealth() {
+        return 16;
+    }
 }

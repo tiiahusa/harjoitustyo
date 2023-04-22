@@ -5,4 +5,7 @@ public class Orange extends Lutemon{
         super(name, color, 8, 1, 0, 17);
 
     }
+    public int getMaxHealth() {
+        return 17;
+    }
 }

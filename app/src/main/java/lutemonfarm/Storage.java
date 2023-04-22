@@ -66,7 +66,9 @@ public class Storage {
         } else if (lutemon.getStatement() == 2) {
             battle.remove(lutemon);
         }
+        lutemon.setHealth(lutemon.getMaxHealth());
         lutemon.setStatement(0);
         home.add(lutemon);
     }
+
 }

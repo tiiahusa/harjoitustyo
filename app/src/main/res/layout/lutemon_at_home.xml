@@ -81,7 +81,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="50dp"
+            android:layout_width="70dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:gravity="center_vertical"
@@ -90,13 +90,23 @@
             <ImageView
                 android:id="@+id/imgHomeToTraining"
                 android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_height="60dp"
                 android:src="@drawable/training" />
+
+            <TextView
+                android:id="@+id/lblTransferFalse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:text="Siirto\n epäonnistui"
+                android:textColor="#850404"
+                android:textSize="12sp"
+                android:visibility="invisible" />
 
             <ImageView
                 android:id="@+id/imgHomeToBattle"
                 android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_height="60dp"
                 android:src="@drawable/fight" />
         </LinearLayout>
 

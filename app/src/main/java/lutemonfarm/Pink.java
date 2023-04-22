@@ -5,5 +5,8 @@ public class Pink extends Lutemon{
         super(name, color, 7, 2, 0, 18);
 
     }
+    public int getMaxHealth() {
+        return 18;
+    }
 }
 

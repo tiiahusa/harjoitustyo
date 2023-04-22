@@ -5,11 +5,12 @@ import android.os.Build;
 import com.example.lutemonit.R;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Lutemon {
 
     protected String name, color;
-    protected int attack, defense, experience, health, maxHealth, id, wins, losses, statement, pic;
+    protected int attack, defense, experience, health, maxHealth, id, wins, losses, statement, pic, trainingdays;
     protected LocalDateTime trainingTime;
     private static int idCounter = 1;
 
@@ -25,6 +26,7 @@ public class Lutemon {
         this.losses = 0;
         id = getNewId();
         this.statement = 0;
+        this.trainingdays = 0;
         setPicture(color);
     }
 
@@ -110,7 +112,6 @@ public class Lutemon {
     public int getHealth() {
         return health;
     }
-
     public int getMaxHealth() {
         return maxHealth;
     }
@@ -126,5 +127,31 @@ public class Lutemon {
         return losses;
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
 
+    public void attack(Lutemon lut, int factor) {
+        int a;
+        // this lutemons health minus battlefriend lutemons defense
+        a = lut.defense((attack+experience) * factor / 100);
+        if (a <= health) {
+            health -= a;
+        } else health = 0;
+    }
+    private int defense(int value) {
+        // This lutemons health minus value, return this lutemons defense
+        if (value <= health) {
+            health -= value;
+        } else health = 0;
+        return defense;
+    }
+
+    public void setExperience() {
+        this.experience += 1;
+    }
+
+    public void returnExperience() {
+        this.experience = 0;
+    }
 }
