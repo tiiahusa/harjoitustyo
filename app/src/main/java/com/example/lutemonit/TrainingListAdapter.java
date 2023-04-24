@@ -1,6 +1,7 @@
 package com.example.lutemonit;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import lutemonfarm.Lutemon;
 import lutemonfarm.Storage;
@@ -17,8 +20,11 @@ import lutemonfarm.Storage;
 public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListHolder> {
 
     ArrayList<Lutemon> items;
+    Storage storage;
+    String trainingText;
 
     public TrainingListAdapter(ArrayList<Lutemon> items) {
+        storage = Storage.getInstance();
         this.items = items;
     }
     @NonNull
@@ -32,7 +38,11 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListHolder
     public void onBindViewHolder(@NonNull TrainingListHolder holder, int position) { // Set card item's texts and image
         holder.name.setText(items.get(position).getName() + "  (" + items.get(position).getColor() + ")");
         holder.experience.setText("Kokemuspisteet: " + items.get(position).getExperience());
-        holder.time.setText("Lutemoni saapui treeniin: " + items.get(position).getTrainingTime());
+        //holder.time.setText("Lutemoni ollut treenissä: " + (System.currentTimeMillis() - items.get(position).getTrainingTime())/60000 + " min");
+        if((System.currentTimeMillis() - items.get(position).getTrainingTime())/60000 >= 1) {
+            trainingText = "Lutemonin treeni valmis!";
+        } else trainingText = "Treeni kesken!!";
+        holder.time.setText(trainingText);
         System.out.println(items.get(position).getName() + items.get(position).getAttack() + items.get(position).getDefense());
 
         // Add click-listener to Go To Training -button
@@ -41,7 +51,7 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListHolder
             // get right lutemon to list
             Lutemon lutemon = items.get(pos);
             // Move lutemon to home
-            Storage.getInstance().setLutemonToHome(lutemon);
+            storage.setLutemonToHome(lutemon);
             notifyItemRemoved(pos);
         });
     }
@@ -65,7 +75,6 @@ class TrainingListHolder extends RecyclerView.ViewHolder {
         experience = itemView.findViewById(R.id.tbExperience);
         time = itemView.findViewById(R.id.tbArriveTime);
         train = itemView.findViewById(R.id.imgTrainingToHome);
-
 
     }
 

@@ -1,6 +1,8 @@
 package com.example.lutemonit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -25,12 +27,16 @@ public class BattleActivity extends AppCompatActivity {
     ImageView imgFirstToHome, imgSecondToHome;
     Button btnStart;
     private ArrayList<Lutemon> lutemons = new ArrayList<>();
+    private ArrayList<Lutemon[]> battleList = new ArrayList<>();
     Storage storage;
     Context context;
     private static Integer[] baseFactor = {0, 25, 50, 75, 100};
     private int percentA, percentB;
     Lutemon first, second;
     String mapText;
+    private RecyclerView recyclerView;
+    BattleAdapter adapter;
+    BattleStorage battleStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,7 @@ public class BattleActivity extends AppCompatActivity {
         //Get Lutemons from storage
         storage = Storage.getInstance();
         lutemons = storage.getLutemonsFromBattle();
+        battleStorage = BattleStorage.getInstance();
 
         // Link view-things to code
         rgFirst = findViewById(R.id.rgFirstLutemon);
@@ -53,11 +60,18 @@ public class BattleActivity extends AppCompatActivity {
         imgSecondToHome = findViewById(R.id.imgSecLutemonToHome);
         btnStart = findViewById(R.id.btnStartBattle);
 
+        // Link recyclerview to code and start it
+        recyclerView = findViewById(R.id.rvBattleStart);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new BattleAdapter(battleStorage.getAttacks());
+        recyclerView.setAdapter(adapter);
+
         // Set visibilities
         SetFirstThings(false); // First turn off items
         SetSecondThings(false);
         SetBattleThings(lutemons.size()==2); // Set BattleStart visibilities
         SetLutemons(); // Set names to textviews and visibilities
+        SetBattleView(false);
 
         imgFirstToHome.setOnClickListener(view -> {
             SendToHome(0); // If home-button clicked
@@ -133,6 +147,23 @@ public class BattleActivity extends AppCompatActivity {
         SetBattleThings(lutemons.size()==2); // Check Battle Settings
     }
 
+    private void battleEnd(Lutemon winner, Lutemon loser) {
+        // Add staticpoints and return lutemons to home
+        loser.setLoss();
+        winner.setWin();
+        storage.setLutemonToHome(winner);
+        storage.setLutemonToHome(loser);
+        winner.setWin(); // Set one experiencepoint
+        loser.setLoss(); // set experiencepoints to zero
+    }
+
+    private void SetBattleView(boolean state) {
+        if(state) {
+            recyclerView.setVisibility(View.VISIBLE);
+        } else recyclerView.setVisibility(View.GONE);
+
+    }
+
     private int RandomGenerator(int i) {
         Random random = new Random(); // Create random generator
         return random.nextInt(i); // return random number from factor list
@@ -186,10 +217,15 @@ public class BattleActivity extends AppCompatActivity {
                 Toast.makeText(context, "Valitse taistelukerroin Lutemonille 2!", Toast.LENGTH_LONG).show();
                 return; // If Radiogroup not checked, stop method and toast for user
         }
-        // Set visibilities off
+
+        battleStorage.startNewBattle(first, second);
+        adapter.updateData(battleStorage.getAttacks());
+
+        // Set visibilities on / off
         SetBattleThings(false);
         SetFirstThings(false);
         SetSecondThings(false);
+        SetBattleView(true);
 
         // Set random attack factor
         percentA = baseFactor[RandomGenerator(5)];
@@ -203,35 +239,7 @@ public class BattleActivity extends AppCompatActivity {
         first = lutemons.remove(lutemonSequence);
         second = lutemons.remove(0);
 
-        BattleStorage battleStorage = BattleStorage.getInstance();
-        battleStorage.startNewBattle(first, second);
-
-        // Start battle!! While goes until firts or second lutemon health is zero
-        while(first.getHealth() > 0 && second.getHealth() > 0) {
-
-            first.attack(second, percentA); // first lutemon attack to second one
-            mapText = first.getName() + " hyökkää ja " + second.getName() + " puolustautuu!";
-            battleStorage.addFight(mapText, first);
-            System.out.println(mapText);
-            try {
-                Thread.sleep(3000);
-            }  catch (InterruptedException e) {
-                System.err.println(e.getMessage());
-                throw new RuntimeException(e);
-            }
-
-            second.attack(first, percentB);
-            mapText = second.getName() + " hyökkää ja " + first.getName() + " puolustautuu!";
-            battleStorage.addFight(mapText, second);
-            System.out.println(mapText);
-            try {
-                Thread.sleep(3000);
-            }  catch (InterruptedException e) {
-                System.err.println(e.getMessage());
-                throw new RuntimeException(e);
-            }
-
-        }
+        itsBattleTime();
 
         System.out.println("Taistelu loppui!!");
 
@@ -246,15 +254,39 @@ public class BattleActivity extends AppCompatActivity {
         }
     }
 
-    private void battleEnd(Lutemon winner, Lutemon loser) {
-        // Add staticpoints and return lutemons to home
-        loser.setLoss();
-        winner.setWin();
-        storage.setLutemonToHome(winner);
-        storage.setLutemonToHome(loser);
-        winner.setExperience(); // Set one experiencepoint
-        loser.returnExperience(); // set experiencepoints to zero
+    public void itsBattleTime() {
+        int i = 1;
+
+        // Start battle!! While goes until first or second lutemon health is zero
+        while(first.getHealth() > 0 && second.getHealth() > 0) {
+
+            first.attack(second, percentA); // first lutemon attack to second one
+            mapText = i + ": " + first.getName() + " (att:" + first.getAttack() + ", def:" + first.getDefense() + ", health:" + first.getHealth() + ") hyökkää ja "
+                    + second.getName() + " (att:" + second.getAttack() + ", def:" + second.getDefense() + ", health:" + second.getHealth() + ") puolustautuu!";
+            battleStorage.addFight(first, second);
+            battleStorage.addNewAttack(first, second, mapText);
+            System.out.println(mapText);
+            adapter.updateData(battleStorage.getAttacks());
+            i++;
+
+            second.attack(first, percentB);
+            mapText = i + ": " + second.getName() + " (att:" + second.getAttack() + ", def:" + second.getDefense() + ", health:" + second.getHealth() + ") hyökkää ja "
+                    + first.getName() + " (att:" + first.getAttack() + ", def:" + first.getDefense() + ", health:" + first.getHealth() + ") puolustautuu!";
+            battleStorage.addFight(second, first);
+            battleStorage.addNewAttack(second, first, mapText);
+            System.out.println(mapText);
+            adapter.updateData(battleStorage.getAttacks());
+            i++;
+            /*/try {
+                Thread.sleep(3000);
+            }  catch (InterruptedException e) {
+                System.err.println(e.getMessage());
+                throw new RuntimeException(e);
+            }/*/
+
+        }
     }
+
 
 
 

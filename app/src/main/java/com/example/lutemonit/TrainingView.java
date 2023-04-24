@@ -11,19 +11,25 @@ import lutemonfarm.Storage;
 public class TrainingView extends AppCompatActivity {
 
     private ArrayList<Lutemon> lutemons = new ArrayList<>();
+    Storage storage;
+    private TrainingListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training);
 
-        //Create storage if null and get lutemons to storage
-        lutemons = Storage.getInstance().getLutemonsFromTraining();
+        //Create storage if null
+        storage = Storage.getInstance();
+        // get lutemons to storage
+        lutemons = storage.getLutemonsFromTraining();
 
         // Link recyclerview to code and start it
         RecyclerView recyclerView = findViewById(R.id.rvLutemonsAtTraining);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        TrainingListAdapter adapter = new TrainingListAdapter(lutemons);
+        adapter = new TrainingListAdapter(lutemons);
         recyclerView.setAdapter(adapter);
     }
+
+
 }

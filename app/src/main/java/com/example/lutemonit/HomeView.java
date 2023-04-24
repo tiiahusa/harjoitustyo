@@ -1,4 +1,4 @@
-package com.example.lutemonit;
+/*/package com.example.lutemonit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,5 +29,4 @@ public class HomeView extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         HomeListAdapter adapter = new HomeListAdapter(lutemons);
         recyclerView.setAdapter(adapter);
-    }
-}
+    }/*/

@@ -39,11 +39,11 @@
 
             <TextView
                 android:id="@+id/tbLutemonsName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:text="Lutemon"
-                android:textSize="28sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tbAttackPoints"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:text="Taistelupisteet:"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tbDefensePoints"
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:text="Puolustuspisteet:"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tbExperiencePoints"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:text="Kokemuspisteet:"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tbHealthPoints"
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:text="Elämä:"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
 
         </LinearLayout>

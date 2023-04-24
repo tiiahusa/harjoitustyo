@@ -6,12 +6,14 @@ import com.example.lutemonit.R;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Lutemon {
 
     protected String name, color;
     protected int attack, defense, experience, health, maxHealth, id, wins, losses, statement, pic, trainingdays;
-    protected LocalDateTime trainingTime;
+    protected long trainingTime;
     private static int idCounter = 1;
 
     public Lutemon(String name, String color, int attack, int defense, int experience, int maxHealth) {
@@ -27,10 +29,10 @@ public class Lutemon {
         id = getNewId();
         this.statement = 0;
         this.trainingdays = 0;
-        setPicture(color);
+        this.trainingTime = 0;
     }
 
-    private void setPicture(String color) {
+    /*/private void setPicture() {
         switch (color) { // get color by string
             case "Musta": // if it is black, create black lutemon picture
                 this.pic = R.drawable.black;
@@ -53,31 +55,40 @@ public class Lutemon {
                 break;
 
         }
-    }
+    }/*/
 
     public void setWin() {
+        this.experience++;
         this.wins++;
+        this.health = this.getMaxHealth();
     }
 
     public void setLoss() {
+        this.experience = 0;
         this.losses++;
+        this.health = this.getMaxHealth();
     }
 
-    public void setStatement(int statement) {
+    public void setTrainingDay() {
+        this.experience++;
+        this.trainingdays++;
+        this.health = this.getMaxHealth();
+    }
+
+    protected void setStatement(int statement) {
         this.statement = statement;
     }
 
-    public int getStatement() {
+    protected int getStatement() {
         return statement;
     }
 
-    public void setTrainingTime() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            trainingTime = LocalDateTime.now();
-        }
+    protected void setTrainingTime() {
+        trainingTime = System.currentTimeMillis();
     }
 
-    public LocalDateTime getTrainingTime() {
+
+    public long getTrainingTime() {
         return trainingTime;
     }
 
@@ -127,10 +138,6 @@ public class Lutemon {
         return losses;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
     public void attack(Lutemon lut, int factor) {
         int a;
         // this lutemons health minus battlefriend lutemons defense
@@ -147,11 +154,16 @@ public class Lutemon {
         return defense;
     }
 
-    public void setExperience() {
-        this.experience += 1;
+    public String getDetails() {
+        return name + " (" + color + "): att: " + attack + ", def: " + defense + ", exp: " + experience + ", healt: " + health;
     }
 
-    public void returnExperience() {
-        this.experience = 0;
+    public boolean checkLutemonFromTrainingArea () {
+        long timeNow = System.currentTimeMillis();
+            if(timeNow - trainingTime > 60000) {
+                return true;
+            }
+        return false;
     }
+
 }

@@ -41,10 +41,12 @@ public class MainActivity extends AppCompatActivity {
     @Override // Refresh buttons text
     protected void onPostResume() {
         super.onPostResume();
-        storage = Storage.getInstance();
         btnBattle.setText("Taistelutanner (" + storage.getLutemonsFromBattle().size() + ")");
         btnHome.setText("Lutemonikoti (" + storage.getLutemonsFromHome().size() + ")");
         btnTraining.setText("Treenikämppä (" + storage.getLutemonsFromTraining().size() + ")");
+
+        // Check training area and sen fulltime -trainers to home
+        //storage.checkTrainingArea();
     }
 
     public void AddLutemon(View view) {
