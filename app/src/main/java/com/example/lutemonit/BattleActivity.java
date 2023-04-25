@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
@@ -23,8 +25,8 @@ import lutemonfarm.Storage;
 public class BattleActivity extends AppCompatActivity {
 
     RadioGroup rgFirst, rgSecond;
-    TextView lblFirstLutemon, lblSecondLutemon, lblPrepare, lblChoose;
-    ImageView imgFirstToHome, imgSecondToHome;
+    TextView lblFirstLutemon, lblSecondLutemon, lblPrepare, lblChoose, lblWholeBattle;
+    ImageView imgFirstToHome, imgSecondToHome, imgAttLut, imgDefLut, imgSword, imgWinner;
     Button btnStart;
     private ArrayList<Lutemon> lutemons = new ArrayList<>();
     private ArrayList<Lutemon[]> battleList = new ArrayList<>();
@@ -33,11 +35,16 @@ public class BattleActivity extends AppCompatActivity {
     private static Integer[] baseFactor = {0, 25, 50, 75, 100};
     private int percentA, percentB;
     Lutemon first, second;
-    String mapText;
-    private RecyclerView recyclerView;
+    String mapText, fightText;
+    //private RecyclerView recyclerView;
     BattleAdapter adapter;
     BattleStorage battleStorage;
+    CountDownTimer timer;
+    boolean timerrun;
+    int round = 0;
+    private long timeLeft = 600000;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,12 +66,17 @@ public class BattleActivity extends AppCompatActivity {
         imgFirstToHome = findViewById(R.id.imgFirstLutemonToHome);
         imgSecondToHome = findViewById(R.id.imgSecLutemonToHome);
         btnStart = findViewById(R.id.btnStartBattle);
+        lblWholeBattle = findViewById(R.id.lblWholeBattle);
+        imgAttLut = findViewById(R.id.imgFirstLut);
+        imgDefLut = findViewById(R.id.imgSecLut);
+        imgSword = findViewById(R.id.imgSword);
+        imgWinner = findViewById(R.id.imgWinner);
 
         // Link recyclerview to code and start it
-        recyclerView = findViewById(R.id.rvBattleStart);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new BattleAdapter(battleStorage.getAttacks());
-        recyclerView.setAdapter(adapter);
+        //recyclerView = findViewById(R.id.rvBattleStart);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //adapter = new BattleAdapter(battleStorage.getAttacks());
+        //recyclerView.setAdapter(adapter);
 
         // Set visibilities
         SetFirstThings(false); // First turn off items
@@ -121,6 +133,7 @@ public class BattleActivity extends AppCompatActivity {
         }
     }
 
+
     private void SetLutemons() {
         // Set Lutemon's names and homeimages
         if(lutemons.size() > 0) { // If lutemons has one object
@@ -153,15 +166,21 @@ public class BattleActivity extends AppCompatActivity {
         winner.setWin();
         storage.setLutemonToHome(winner);
         storage.setLutemonToHome(loser);
-        winner.setWin(); // Set one experiencepoint
-        loser.setLoss(); // set experiencepoints to zero
     }
 
     private void SetBattleView(boolean state) {
         if(state) {
-            recyclerView.setVisibility(View.VISIBLE);
-        } else recyclerView.setVisibility(View.GONE);
-
+            lblWholeBattle.setVisibility(View.VISIBLE); // Set battle-textview visible
+            imgAttLut.setVisibility(View.VISIBLE); // Show AttackLut image
+            imgSword.setVisibility(View.VISIBLE); // Show Sword
+            imgDefLut.setVisibility(View.VISIBLE); // Show DefenseLut image
+        } else {
+            lblWholeBattle.setVisibility(View.GONE); // Set battle-textview invisible
+            imgAttLut.setVisibility(View.GONE); // Hide AttackLut image
+            imgSword.setVisibility(View.GONE); // Hide Sword
+            imgDefLut.setVisibility(View.GONE); // Hide DefenseLut image
+            imgWinner.setVisibility(View.GONE); // Hide Winner picture
+        }
     }
 
     private int RandomGenerator(int i) {
@@ -218,8 +237,7 @@ public class BattleActivity extends AppCompatActivity {
                 return; // If Radiogroup not checked, stop method and toast for user
         }
 
-        battleStorage.startNewBattle(first, second);
-        adapter.updateData(battleStorage.getAttacks());
+        battleStorage.startNewBattle(); // Start Battle and clear recent battle from battlestorage
 
         // Set visibilities on / off
         SetBattleThings(false);
@@ -227,9 +245,22 @@ public class BattleActivity extends AppCompatActivity {
         SetSecondThings(false);
         SetBattleView(true);
 
+        // Clear battle -textbox
+        lblWholeBattle.setText("");
+        // Clear figthText
+        fightText = "";
+
         // Set random attack factor
         percentA = baseFactor[RandomGenerator(5)];
         percentB = baseFactor[RandomGenerator(5)];
+        System.out.println("Ekan kerroin " + percentA);
+        System.out.println("Tokan kerroin " + percentB);
+
+        while(percentB+percentA == 0) {
+            // New try if both percents are zero
+            percentA = baseFactor[RandomGenerator(5)];
+            percentB = baseFactor[RandomGenerator(5)];
+        }
 
         System.out.println("Ekan kerroin " + percentA);
         System.out.println("Tokan kerroin " + percentB);
@@ -239,53 +270,106 @@ public class BattleActivity extends AppCompatActivity {
         first = lutemons.remove(lutemonSequence);
         second = lutemons.remove(0);
 
+        System.out.println("Eka lutmeoni on " + first.getName());
+        System.out.println("Toka lutemoni on " + second.getName());
+
         itsBattleTime();
 
-        System.out.println("Taistelu loppui!!");
+    }
 
+    public void battleEnd () {
+
+        fightText += "\n\n Taistelu on päättynyt!! \n\n";
+        lblWholeBattle.setText(fightText);
+        imgSword.setVisibility(View.GONE);
+
+        // If second one wins
         if(first.getHealth() <= 0 && second.getHealth() > 0) {
-            System.out.println("Toka voitti");
+            mapText = "\n" + second.getName() + " voitti tämän taistelun!";
+            fightText += mapText;
+            lblWholeBattle.setText(fightText);
+            imgAttLut.setImageResource(second.getPic());
+            imgDefLut.setVisibility(View.GONE);
             battleEnd(second, first);
+            imgWinner.setVisibility(View.VISIBLE); // Show Winner picture
         } else if(first.getHealth() > 0 && second.getHealth() <= 0) {
-            System.out.println("Eka voitti");
+            mapText = "\n" + first.getName() + " voitti tämän taistelun!";
+            fightText += mapText;
+            lblWholeBattle.setText(fightText);
+            imgAttLut.setImageResource(first.getPic());
+            imgDefLut.setVisibility(View.GONE);
             battleEnd(first, second);
+            imgWinner.setVisibility(View.VISIBLE); // Show Winner picture
         } else {
-            System.out.println("Ekan elämät " + first.getHealth() + " ja tokan elämät " + second.getHealth());
+            mapText = "\n Tämä oli tasapeli!!";
+            fightText +=  mapText;
+            lblWholeBattle.setText(fightText);
+            imgAttLut.setImageResource(first.getPic());
+            imgDefLut.setImageResource(second.getPic());
         }
+
     }
 
     public void itsBattleTime() {
-        int i = 1;
+        round = 0;
 
-        // Start battle!! While goes until first or second lutemon health is zero
-        while(first.getHealth() > 0 && second.getHealth() > 0) {
-
-            first.attack(second, percentA); // first lutemon attack to second one
-            mapText = i + ": " + first.getName() + " (att:" + first.getAttack() + ", def:" + first.getDefense() + ", health:" + first.getHealth() + ") hyökkää ja "
-                    + second.getName() + " (att:" + second.getAttack() + ", def:" + second.getDefense() + ", health:" + second.getHealth() + ") puolustautuu!";
-            battleStorage.addFight(first, second);
-            battleStorage.addNewAttack(first, second, mapText);
-            System.out.println(mapText);
-            adapter.updateData(battleStorage.getAttacks());
-            i++;
-
-            second.attack(first, percentB);
-            mapText = i + ": " + second.getName() + " (att:" + second.getAttack() + ", def:" + second.getDefense() + ", health:" + second.getHealth() + ") hyökkää ja "
-                    + first.getName() + " (att:" + first.getAttack() + ", def:" + first.getDefense() + ", health:" + first.getHealth() + ") puolustautuu!";
-            battleStorage.addFight(second, first);
-            battleStorage.addNewAttack(second, first, mapText);
-            System.out.println(mapText);
-            adapter.updateData(battleStorage.getAttacks());
-            i++;
-            /*/try {
-                Thread.sleep(3000);
-            }  catch (InterruptedException e) {
-                System.err.println(e.getMessage());
-                throw new RuntimeException(e);
-            }/*/
-
-        }
+        timer = new CountDownTimer(timeLeft, 1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeft = l;
+                if(round % 2 == 0) {
+                    firstAttack();
+                } else secondAttack();
+            }
+            @Override
+            public void onFinish() {
+            }
+        }.start();
+        timerrun = true;
     }
+
+    public void stopTimer() {
+        timer.cancel();
+        timeLeft = 600000;
+        timerrun = false;
+        battleEnd();
+    }
+    public void firstAttack()
+    {
+        // End Battle when first or second is dead
+        if (first.getHealth() <= 0 || second.getHealth() <= 0) {
+            stopTimer();
+            return;
+        }
+        round += 1;
+        first.attack(second, percentA, percentB); // first lutemon attack to second one
+        mapText = round + ") " + first.getName() + " (att:" + first.getAttack() + ", def:" + first.getDefense() + ", health:" + first.getHealth() + ") hyökkää ja "
+                + second.getName() + " (att:" + second.getAttack() + ", def:" + second.getDefense() + ", health:" + second.getHealth() + ") puolustautuu!";
+        fightText += mapText;
+        fightText += "\n";
+        lblWholeBattle.setText(fightText);
+        imgAttLut.setImageResource(first.getPic());
+        imgDefLut.setImageResource(second.getPic());
+    }
+
+    public void secondAttack()
+    {
+        // End Battle when first or second is dead
+        if (first.getHealth() <= 0 || second.getHealth() <= 0) {
+            stopTimer();
+            return;
+        }
+        round += 1;
+        second.attack(first, percentB, percentA); // first lutemon attack to second one
+        mapText = round + ") " + second.getName() + " (att:" +second.getAttack() + ", def:" + second.getDefense() + ", health:" + second.getHealth() + ") hyökkää ja "
+                + first.getName() + " (att:" + first.getAttack() + ", def:" + first.getDefense() + ", health:" + first.getHealth() + ") puolustautuu!";
+        fightText += mapText;
+        fightText += "\n";
+        lblWholeBattle.setText(fightText);
+        imgDefLut.setImageResource(first.getPic());
+        imgAttLut.setImageResource(second.getPic());
+    }
+
 
 
 

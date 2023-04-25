@@ -153,11 +153,60 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvBattleStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/imgFirstLut"
+        android:layout_width="112dp"
+        android:layout_height="123dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/black" />
+
+    <ImageView
+        android:id="@+id/imgSecLut"
+        android:layout_width="111dp"
+        android:layout_height="118dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="52dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imgFirstLut"
+        app:layout_constraintTop_toBottomOf="@+id/rgSecLutemon"
+        app:srcCompat="@drawable/green" />
+
+    <ImageView
+        android:id="@+id/imgSword"
+        android:layout_width="367dp"
+        android:layout_height="155dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.977"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rgSecLutemon"
+        app:srcCompat="@drawable/sword" />
+
+
+    <ImageView
+        android:id="@+id/imgWinner"
+        android:layout_width="178dp"
+        android:layout_height="168dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.995"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rgSecLutemon"
+        app:srcCompat="@drawable/winner" />
+
+    <TextView
+        android:id="@+id/lblWholeBattle"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="14sp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/imgFirstLut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

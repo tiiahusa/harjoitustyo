@@ -15,21 +15,15 @@ import java.util.HashMap;
 import lutemonfarm.Lutemon;
 
 public class BattleAdapter extends RecyclerView.Adapter<BattleHolder> {
-    //ArrayList<String> battle;
-    //ArrayList<String> firstDetails;
-    //ArrayList<String> secDetails;
-    ArrayList<Lutemon[]> order;
-    ArrayList<String> battle = new ArrayList<>();
-    HashMap<String, Lutemon[]> orders = new HashMap<>();
-    private Lutemon[] luts;
 
-    public BattleAdapter(HashMap<String, Lutemon[]> orders) {
-        //this.order = order;
-        this.orders = orders;
-        battle.clear();
-        for (String x: orders.keySet()) {
-            this.battle.add(x);
-        }
+    ArrayList<ArrayList<String>> battle = new ArrayList<>();
+    ArrayList<String> battlePart = new ArrayList<>();
+    private int attacker;
+    private int defenser;
+
+
+    public BattleAdapter(ArrayList<ArrayList<String>> battle) {
+        this.battle = battle;
     }
 
     @NonNull
@@ -41,12 +35,18 @@ public class BattleAdapter extends RecyclerView.Adapter<BattleHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull BattleHolder holder, int position) {
-        luts = orders.get(battle.get(position));
-        //luts = order.get(position); // Get [] to ArrayList
-        holder.imgAttackLut.setImageResource(luts[0].getPic()); // Set images
-        holder.imgDefenseLut.setImageResource(luts[1].getPic());
-        holder.lblTitle.setText(battle.get(position));
-        orders.
+        // Pick battle part from battle ArrayList
+        battlePart = battle.get(position);
+        try{
+            attacker = Integer.parseInt(battlePart.get(1));
+            defenser = Integer.parseInt(battlePart.get(2));
+        }
+        catch (NumberFormatException ex){
+            ex.printStackTrace();
+        }
+        holder.imgAttackLut.setImageResource(attacker); // Set images
+        holder.imgDefenseLut.setImageResource(defenser);
+        holder.lblTitle.setText(battlePart.get(0));
         //holder.lblTitle.setText("Lutemon " + luts[0].getName() + " hyökkää lutemonin " + luts[1].getName() + " kimppuun!!");
         //holder.lblAttackLut.setText(luts[0].getDetails());
         //holder.lblDefenseLut.setText(luts[1].getDetails());
@@ -55,15 +55,12 @@ public class BattleAdapter extends RecyclerView.Adapter<BattleHolder> {
 
     @Override
     public int getItemCount() {
-        return order.size();
+        return battle.size();
     }
 
-    public void updateData(HashMap<String, Lutemon[]> orders) {
-        battle.clear();
-        this.orders = orders;
-        for (String x: orders.keySet()) {
-            this.battle.add(x);
-        }
+    public void updateData(ArrayList<ArrayList<String>> battle) {
+        // Update recyclerview data
+        this.battle = battle;
         notifyDataSetChanged();
     }
 }
@@ -80,8 +77,6 @@ class BattleHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         lblTitle = itemView.findViewById(R.id.lblTitle); // link items to code
-        lblAttackLut = itemView.findViewById(R.id.lblAttackLut);
-        lblDefenseLut = itemView.findViewById(R.id.lblDefenseLut);
 
         imgAttackLut = itemView.findViewById(R.id.imgAttackLut);
         imgDefenseLut = itemView.findViewById(R.id.imgDefenseLut);

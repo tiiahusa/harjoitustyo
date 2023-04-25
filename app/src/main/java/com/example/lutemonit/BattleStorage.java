@@ -10,6 +10,7 @@ public class BattleStorage {
     private static BattleStorage battleStorage = null; // Only one storage can be created
     private ArrayList<ArrayList<String>> battle = new ArrayList<>();
     private ArrayList<String> attack = new ArrayList<>();
+    private static int i = 0;
     //private HashMap<String, Lutemon[]> attacks = new HashMap();
     //private ArrayList<Lutemon[]> order = new ArrayList<>();
     //private Lutemon first, second;
@@ -25,36 +26,27 @@ public class BattleStorage {
         return battleStorage;
     }
 
-    public void startNewBattle(Lutemon first, Lutemon second){
-        battle.clear(); // Clear battle HashMap
-        //this.first = first;
-        //this.second = second;
+    public void startNewBattle(){
+        battle.clear(); // Clear battle ArrayList
     }
 
-    public void addFight(Lutemon attackLut, Lutemon defenseLut) {
-        //Lutemon[] fight = {attackLut, defenseLut};
-        //order.add(fight);
-    }
 
     public void addNewAttack(Lutemon attacker, Lutemon defenser, String attacks) {
+        String mapText = i + ": " + attacker.getName() + " (att:" + attacker.getAttack() + ", def:" + attacker.getDefense() + ", health:" + attacker.getHealth() + ") hyökkää ja "
+                + defenser.getName() + " (att:" + defenser.getAttack() + ", def:" + defenser.getDefense() + ", health:" + defenser.getHealth() + ") puolustautuu!";
         attack.clear();
-        attack.add(attacks);
+        attack.add(mapText);
         attack.add(String.valueOf(attacker.getPic()));
         attack.add(String.valueOf(defenser.getPic()));
         battle.add(attack);
     }
 
-    public ArrayList<ArrayList<String>> getAttacks() {
-        return battle;
+    private int getId() {
+        return i++;
     }
 
-    public ArrayList<Lutemon[]> getBattle () {
-        ArrayList<Lutemon[]> returnlist = new ArrayList<>();
-        for(int i = order.size()-1; i > 0; i--) {
-            returnlist.add(order.get(i));
-        }
-        System.out.println(returnlist);
-        return returnlist;
+    public ArrayList<ArrayList<String>> getAttacks() {
+        return battle;
     }
 
 }

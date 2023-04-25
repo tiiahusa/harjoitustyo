@@ -32,31 +32,6 @@ public class Lutemon {
         this.trainingTime = 0;
     }
 
-    /*/private void setPicture() {
-        switch (color) { // get color by string
-            case "Musta": // if it is black, create black lutemon picture
-                this.pic = R.drawable.black;
-                break;
-            case "Vihreä": // if it is green, create green lutemon picture
-                this.pic = R.drawable.green;
-                break;
-            case "Oranssi": // if it is orange, create orange lutemon picture
-                this.pic = R.drawable.orange;
-                break;
-            case "Pinkki": // if it is pink, create pink lutemon picture
-                this.pic = R.drawable.pink;
-                break;
-            case "Valkoinen": // if it is white, create white lutemon picture
-                this.pic = R.drawable.white;
-                break;
-
-            default:
-                this.pic = R.drawable.black;
-                break;
-
-        }
-    }/*/
-
     public void setWin() {
         this.experience++;
         this.wins++;
@@ -138,20 +113,20 @@ public class Lutemon {
         return losses;
     }
 
-    public void attack(Lutemon lut, int factor) {
+    public void attack(Lutemon lut, int factor, int defFactor) {
         int a;
         // this lutemons health minus battlefriend lutemons defense
-        a = lut.defense((attack+experience) * factor / 100);
+        a = lut.defense((attack+experience) * factor / 100, defFactor);
         if (a <= health) {
             health -= a;
         } else health = 0;
     }
-    private int defense(int value) {
+    private int defense(int value, int factor) {
         // This lutemons health minus value, return this lutemons defense
         if (value <= health) {
             health -= value;
         } else health = 0;
-        return defense;
+        return defense*factor / 100;
     }
 
     public String getDetails() {
