@@ -92,7 +92,7 @@ public class BattleActivity extends AppCompatActivity {
             SendToHome(1); // If home-button clicked
         });
         btnStart.setOnClickListener(view -> {
-            StartBattle(); // When Start-button clicked
+            startBattle(); // When Start-button clicked
         });
 
 
@@ -183,12 +183,12 @@ public class BattleActivity extends AppCompatActivity {
         }
     }
 
-    private int RandomGenerator(int i) {
+    private int randomGenerator(int i) {
         Random random = new Random(); // Create random generator
         return random.nextInt(i); // return random number from factor list
     }
 
-    public void StartBattle() {
+    public void startBattle() {
         // Create few "jäsenmuuttuja"
         int firstrg;
         int secrg;
@@ -251,22 +251,22 @@ public class BattleActivity extends AppCompatActivity {
         fightText = "";
 
         // Set random attack factor
-        percentA = baseFactor[RandomGenerator(5)];
-        percentB = baseFactor[RandomGenerator(5)];
+        percentA = baseFactor[randomGenerator(5)];
+        percentB = baseFactor[randomGenerator(5)];
         System.out.println("Ekan kerroin " + percentA);
         System.out.println("Tokan kerroin " + percentB);
 
         while(percentB+percentA == 0) {
             // New try if both percents are zero
-            percentA = baseFactor[RandomGenerator(5)];
-            percentB = baseFactor[RandomGenerator(5)];
+            percentA = baseFactor[randomGenerator(5)];
+            percentB = baseFactor[randomGenerator(5)];
         }
 
         System.out.println("Ekan kerroin " + percentA);
         System.out.println("Tokan kerroin " + percentB);
 
         // Lutemons order is random, generator allot which one is first and witch second
-        int lutemonSequence = RandomGenerator(2);
+        int lutemonSequence = randomGenerator(2);
         first = lutemons.remove(lutemonSequence);
         second = lutemons.remove(0);
 
@@ -277,13 +277,14 @@ public class BattleActivity extends AppCompatActivity {
 
     }
 
-    public void battleEnd () {
+    public void battleFinal () {
 
         fightText += "\n\n Taistelu on päättynyt!! \n\n";
         lblWholeBattle.setText(fightText);
         imgSword.setVisibility(View.GONE);
 
-        // If second one wins
+        // If second one wins, add info to battletext, show second picture and winnerpicture, hide first picture and sworepicture
+        // Add statisc
         if(first.getHealth() <= 0 && second.getHealth() > 0) {
             mapText = "\n" + second.getName() + " voitti tämän taistelun!";
             fightText += mapText;
@@ -332,7 +333,7 @@ public class BattleActivity extends AppCompatActivity {
         timer.cancel();
         timeLeft = 600000;
         timerrun = false;
-        battleEnd();
+        battleFinal();
     }
     public void firstAttack()
     {
