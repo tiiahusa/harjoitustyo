@@ -20,12 +20,12 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tilastot" />
+            android:text="Lataa lutemonit" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nice To Know" />
+            android:text="Tilastot" />
     </com.google.android.material.tabs.TabLayout>
 
     <FrameLayout

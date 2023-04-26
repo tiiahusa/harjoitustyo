@@ -78,6 +78,7 @@ public class Storage {
     }
 
 
-
-
+    public HashMap<Integer, Lutemon> getLutemons() {
+        return lutemons;
+    }
 }

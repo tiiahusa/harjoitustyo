@@ -1,5 +1,6 @@
 package com.example.lutemonit;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,41 +8,32 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentFacts#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import lutemonfarm.Lutemon;
+import lutemonfarm.Storage;
+
 public class FragmentFacts extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    TextView lblWins, lblLosses, lblStatic;
+    Storage storage;
+    ArrayList<Lutemon> mostWins = new ArrayList<>();
+    ArrayList<Lutemon> mostLosses = new ArrayList<>();
+    private String staticText, startText, winText, lossText;
+    private int i, maxWin, maxLoss;
+    private HashMap<Integer, Lutemon> lutemons = new HashMap<>();
 
     public FragmentFacts() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentFacts.
-     */
-    // TODO: Rename and change types and number of parameters
     public static FragmentFacts newInstance(String param1, String param2) {
         FragmentFacts fragment = new FragmentFacts();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,15 +42,96 @@ public class FragmentFacts extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_facts, container, false);
+
+        lblWins = v.findViewById(R.id.lblWins);
+        lblLosses = v.findViewById(R.id.lblLosses);
+        lblStatic = v.findViewById(R.id.lblFacts);
+
+        storage = Storage.getInstance();
+
+        checkStatics();
+        updateScreen();
+
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_facts, container, false);
+        return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkStatics();
+        updateScreen();
+    }
+
+    private void checkStatics() {
+
+        lutemons = storage.getLutemons();
+        mostWins.clear();
+        mostLosses.clear();
+        staticText = "";
+        maxLoss = 0;
+        maxWin = 0;
+        i = 0;
+
+        // Went throw lutemons HashMap
+        lutemons.forEach((key, lut) -> {
+            // Update most wins -lutemon if needed
+            if (maxWin == lut.getWins()) {
+                mostWins.add(lut); }
+            if(maxWin < lut.getWins()) {
+                maxWin = lut.getWins();
+                mostWins.clear();
+                mostWins.add(lut);
+            } if (maxLoss == lut.getLosses()) {
+                    mostLosses.add(lut);
+                }
+            if(maxLoss < lut.getLosses()) {
+                maxLoss = lut.getLosses();
+                mostLosses.clear();
+                mostLosses.add(lut);
+            }
+            staticText += lut.getName() + " on voittanut " + lut.getWins() + " kertaa ja hävinnyt " + lut.getLosses() + " kertaa\n";
+            i += lut.getWins();
+            i += lut.getLosses();
+        });
+
+    }
+
+    private void updateScreen() {
+        startText = "Taisteluita on käyty yhteensä " + i/2 + " kappaletta:\n";
+
+        if(mostWins.size() > 1) { // If deadheat, list all maxwins lutemons
+            winText = "Eniten voittoja on lutemoneilla: ";
+            mostWins.forEach((lut) -> winText += lut.getName()+", ");
+            winText = winText.substring(0, winText.length()-2);
+        }
+        if (mostWins.size() == 1) {
+            winText = "Eniten voittoja on lutemonilla " + mostWins.get(0).getName();
+        }
+        if (mostLosses.size() > 1) { // If deadheat, list all maxwloss lutemons
+            lossText = "Eniten häviöitä on lutemoneilla: ";
+            mostLosses.forEach((lut) -> lossText += lut.getName()+", ");
+            lossText = lossText.substring(0, lossText.length()-2);
+        }
+        if (mostLosses.size() == 1) {
+            lossText = "Eniten häviöitä on lutemonilla " + mostLosses.get(0).getName();
+        }
+        if(i == 0) {
+            winText = "Taisteluita ei ole käyty, joten tilastoja ei ole saatavilla";
+            lossText = "";
+        }
+        lblWins.setText(winText);
+        lblLosses.setText(lossText);
+        lblStatic.setText(startText + staticText);
     }
 }

@@ -9,8 +9,33 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:text="Tämä on Nice To Know -faktojen sivu"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="top|center_horizontal"
+        android:text="Eniten voittoja: "
+        android:id="@+id/lblWins"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
+        android:layout_gravity="top|center_horizontal"
+        android:text="Eniten häviöitä: "
+        android:id="@+id/lblLosses"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="130dp"
+        android:layout_gravity="top|center_horizontal"
+        android:text="Eniten kokemuspisteitä: "
+        android:id="@+id/lblExperience"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:layout_gravity="center_horizontal|top"
+        android:text="Tähän tulostetaan kaikkien tilastot"
         android:id="@+id/lblFacts"/>
 
 </FrameLayout>

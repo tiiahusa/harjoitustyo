@@ -34,15 +34,13 @@ public class BattleActivity extends AppCompatActivity {
     Context context;
     private static Integer[] baseFactor = {0, 25, 50, 75, 100};
     private int percentA, percentB;
-    Lutemon first, second;
+    private Lutemon first, second;
     String mapText, fightText;
-    //private RecyclerView recyclerView;
-    BattleAdapter adapter;
     BattleStorage battleStorage;
     CountDownTimer timer;
-    boolean timerrun;
-    int round = 0;
-    private long timeLeft = 600000;
+    private boolean timerrun;
+    private int round;
+    private long timeLeft = 100000;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -71,12 +69,6 @@ public class BattleActivity extends AppCompatActivity {
         imgDefLut = findViewById(R.id.imgSecLut);
         imgSword = findViewById(R.id.imgSword);
         imgWinner = findViewById(R.id.imgWinner);
-
-        // Link recyclerview to code and start it
-        //recyclerView = findViewById(R.id.rvBattleStart);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //adapter = new BattleAdapter(battleStorage.getAttacks());
-        //recyclerView.setAdapter(adapter);
 
         // Set visibilities
         SetFirstThings(false); // First turn off items
@@ -134,7 +126,7 @@ public class BattleActivity extends AppCompatActivity {
     }
 
 
-    private void SetLutemons() {
+    private void SetLutemons() { // Set battle-lutemons to page top and refresh lutemons
         // Set Lutemon's names and homeimages
         if(lutemons.size() > 0) { // If lutemons has one object
             lblFirstLutemon.setText(lutemons.get(0).getName()); // Set first name to label
@@ -152,7 +144,7 @@ public class BattleActivity extends AppCompatActivity {
         }
     }
 
-    private void SendToHome(int i) {
+    private void SendToHome(int i) {  // When home-button clicked
         Lutemon lut = lutemons.get(i); // Get lutemon object
         storage.setLutemonToHome(lut); // Send it to home
         lutemons = storage.getLutemonsFromBattle(); // Refresh lutemons-list
@@ -160,7 +152,7 @@ public class BattleActivity extends AppCompatActivity {
         SetBattleThings(lutemons.size()==2); // Check Battle Settings
     }
 
-    private void battleEnd(Lutemon winner, Lutemon loser) {
+    private void battleEnd(Lutemon winner, Lutemon loser) { // When battle is end
         // Add staticpoints and return lutemons to home
         loser.setLoss();
         winner.setWin();
@@ -168,7 +160,15 @@ public class BattleActivity extends AppCompatActivity {
         storage.setLutemonToHome(loser);
     }
 
-    private void SetBattleView(boolean state) {
+    private void battleDraw(Lutemon first, Lutemon second) { // When battle is end and both lutemons are dead
+        // Both loss the fight and return lutemons to home
+        first.setLoss();
+        second.setLoss();
+        storage.setLutemonToHome(first);
+        storage.setLutemonToHome(second);
+    }
+
+    private void SetBattleView(boolean state) { // Set Battle things visible / invisible
         if(state) {
             lblWholeBattle.setVisibility(View.VISIBLE); // Set battle-textview visible
             imgAttLut.setVisibility(View.VISIBLE); // Show AttackLut image
@@ -188,7 +188,7 @@ public class BattleActivity extends AppCompatActivity {
         return random.nextInt(i); // return random number from factor list
     }
 
-    public void startBattle() {
+    public void startBattle() { // Battle settings
         // Create few "jäsenmuuttuja"
         int firstrg;
         int secrg;
@@ -253,8 +253,6 @@ public class BattleActivity extends AppCompatActivity {
         // Set random attack factor
         percentA = baseFactor[randomGenerator(5)];
         percentB = baseFactor[randomGenerator(5)];
-        System.out.println("Ekan kerroin " + percentA);
-        System.out.println("Tokan kerroin " + percentB);
 
         while(percentB+percentA == 0) {
             // New try if both percents are zero
@@ -262,26 +260,26 @@ public class BattleActivity extends AppCompatActivity {
             percentB = baseFactor[randomGenerator(5)];
         }
 
-        System.out.println("Ekan kerroin " + percentA);
-        System.out.println("Tokan kerroin " + percentB);
+        //System.out.println("Ekan kerroin " + percentA);
+        //System.out.println("Tokan kerroin " + percentB);
 
         // Lutemons order is random, generator allot which one is first and witch second
         int lutemonSequence = randomGenerator(2);
         first = lutemons.remove(lutemonSequence);
         second = lutemons.remove(0);
 
-        System.out.println("Eka lutmeoni on " + first.getName());
-        System.out.println("Toka lutemoni on " + second.getName());
+        //System.out.println("Eka lutmeoni on " + first.getName());
+        //System.out.println("Toka lutemoni on " + second.getName());
 
-        itsBattleTime();
+        itsBattleTime(); // Then go to the battle
 
     }
 
-    public void battleFinal () {
+    public void battleFinal () { // When somebody is dead
 
-        fightText += "\n\n Taistelu on päättynyt!! \n\n";
-        lblWholeBattle.setText(fightText);
-        imgSword.setVisibility(View.GONE);
+        fightText += "\n\n Taistelu on päättynyt!!";
+        lblWholeBattle.setText(fightText); // Refresh label
+        imgSword.setVisibility(View.GONE); // Hide sword image
 
         // If second one wins, add info to battletext, show second picture and winnerpicture, hide first picture and sworepicture
         // Add statisc
@@ -293,7 +291,9 @@ public class BattleActivity extends AppCompatActivity {
             imgDefLut.setVisibility(View.GONE);
             battleEnd(second, first);
             imgWinner.setVisibility(View.VISIBLE); // Show Winner picture
-        } else if(first.getHealth() > 0 && second.getHealth() <= 0) {
+        // If first one wins, add info to battletext, show first picture and winnerpicture, hide second picture
+        // Add statisc
+        } if(first.getHealth() > 0 && second.getHealth() <= 0) {
             mapText = "\n" + first.getName() + " voitti tämän taistelun!";
             fightText += mapText;
             lblWholeBattle.setText(fightText);
@@ -301,26 +301,34 @@ public class BattleActivity extends AppCompatActivity {
             imgDefLut.setVisibility(View.GONE);
             battleEnd(first, second);
             imgWinner.setVisibility(View.VISIBLE); // Show Winner picture
-        } else {
+        // If both lutemons are dead
+        } if(first.getHealth() <= 0 && second.getHealth() <= 0) {
             mapText = "\n Tämä oli tasapeli!!";
             fightText +=  mapText;
             lblWholeBattle.setText(fightText);
             imgAttLut.setImageResource(first.getPic());
             imgDefLut.setImageResource(second.getPic());
+            battleDraw(first, second);
         }
 
     }
 
     public void itsBattleTime() {
-        round = 0;
+        round = 0; // Set "kierroslukumittari"
 
-        timer = new CountDownTimer(timeLeft, 1000) {
+        timer = new CountDownTimer(timeLeft, 1000) { // One second interval (countdown)timer
             @Override
             public void onTick(long l) {
-                timeLeft = l;
-                if(round % 2 == 0) {
+                timeLeft = l; // Timer works max10 minutes
+                if(round == 0) { // When we are in first round
+                    fightText = "Taistelu alkaa! Lutemonin " + first.getName() + " " +
+                            "kerroin on " + percentA + " ja Lutemonin " + second.getName() +
+                            " kerroin on " + percentB + "\n\n";
+                    lblWholeBattle.setText(fightText);
+                }
+                if(round % 2 == 0) { // If round is "tasaluku", its first lutemons turn
                     firstAttack();
-                } else secondAttack();
+                } else secondAttack(); // ELse it seconds turn
             }
             @Override
             public void onFinish() {
@@ -329,9 +337,9 @@ public class BattleActivity extends AppCompatActivity {
         timerrun = true;
     }
 
-    public void stopTimer() {
-        timer.cancel();
-        timeLeft = 600000;
+    public void stopTimer() { // When battle is end
+        timer.cancel(); // Stop timer
+        timeLeft = 100000; // Set maxTime up
         timerrun = false;
         battleFinal();
     }
