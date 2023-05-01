@@ -2,7 +2,9 @@ package lutemonfarm;
 
 import com.example.lutemonit.R;
 
-public class Black extends Lutemon{
+import java.io.Serializable;
+
+public class Black extends Lutemon implements Serializable {
     public Black(String name, String color) {
         super(name, color, 9, 0, 0, 16);
         setPicture();

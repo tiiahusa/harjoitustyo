@@ -1,15 +1,18 @@
 package com.example.lutemonit;
 
+import android.content.Context;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 public class HomeViewer extends AppCompatActivity {
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = HomeViewer.this;
         setContentView(R.layout.activity_homeview);
 
         // Link code to layout things
@@ -52,5 +55,9 @@ public class HomeViewer extends AppCompatActivity {
                 tablayout.getTabAt(position).select();
             }
         });
+    }
+
+    public Context getContext() {
+        return context;
     }
 }

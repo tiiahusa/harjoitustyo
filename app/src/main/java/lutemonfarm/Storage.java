@@ -1,21 +1,31 @@
 package lutemonfarm;
 
+import android.content.Context;
 import android.os.Build;
+import android.view.View;
+import android.widget.Toast;
 
-import java.time.LocalDateTime;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Storage {
-
+    final private String FILENAME;
     private static Storage storage = null; // Only one storage can be created
     private HashMap<Integer, Lutemon> lutemons = new HashMap<>();
     private ArrayList<Lutemon> home = new ArrayList<>();
     private ArrayList<Lutemon> training = new ArrayList<>();
     private ArrayList<Lutemon> battle = new ArrayList<>();
+    Context context;
 
     private Storage () { // Singleton setting, thats why this is private method
-
+        FILENAME = "lutemons.data";
+        context = context.getApplicationContext();
     }
 
     public static Storage getInstance () { //If storage is null, create new one. Return storage
@@ -27,6 +37,7 @@ public class Storage {
     public void AddLutemon(Lutemon lutemon) { //Add new lutemon to HashMap
         lutemons.put(lutemon.getId(), lutemon);
         home.add(lutemon);
+        //saveLutemons(context);
     } // Add new lutemon to list
     
     public ArrayList<Lutemon> getLutemonsFromHome() {
@@ -77,8 +88,49 @@ public class Storage {
         home.add(lutemon);
     }
 
-
     public HashMap<Integer, Lutemon> getLutemons() {
         return lutemons;
+    }
+
+    public void saveLutemons(Context context) {
+        // try write user to file
+        try {
+            // create object output stream name users.data
+            ObjectOutputStream userWriter = new ObjectOutputStream(context.openFileOutput(FILENAME, Context.MODE_PRIVATE));
+            // Write users-list there
+            userWriter.writeObject(lutemons);
+            // close file
+            userWriter.close();
+            Toast.makeText(context, "Käyttäjä tallennettu", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            // If writing to file not success
+            Toast.makeText(context, "Käyttäjän tallentaminen ei onnistunut" + e, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void loadLutemons(Context context) {
+        // try write user to file
+        try {
+            // create object input stream name users.data
+            ObjectInputStream lutReader = new ObjectInputStream(context.openFileInput(FILENAME));
+            // Read file to Arraylist name users
+            lutemons = (HashMap<Integer, Lutemon>) lutReader.readObject();
+            // close file
+            lutReader.close();
+
+        } catch (FileNotFoundException e) { // If file not found
+            Toast.makeText(context, "Lutemonilistaa ei löytynyt!", Toast.LENGTH_LONG).show();
+            System.out.println("Lutemonien lataaminen ei onnistunut!");
+            e.printStackTrace();
+        } catch (IOException e) { // IO problem
+            Toast.makeText(context, "Lutemonien lataaminen ei onnistunut!", Toast.LENGTH_LONG).show();
+            System.out.println("Lutemonien lataaminen ei onnistunut!");
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) { // Class problem
+            Toast.makeText(context, "Lutemonien lataaminen ei onnistunut!", Toast.LENGTH_LONG).show();
+            System.out.println("Lutemonien lataaminen ei onnistunut!");
+            e.printStackTrace();
+        }
+
     }
 }

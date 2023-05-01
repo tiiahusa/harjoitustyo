@@ -4,17 +4,19 @@ import android.os.Build;
 
 import com.example.lutemonit.R;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Lutemon {
+public class Lutemon implements Serializable {
 
     protected String name, color;
     protected int attack, defense, experience, health, maxHealth, id, wins, losses, statement, pic, trainingdays;
     protected long trainingTime;
     private static int idCounter = 1;
+    private static final long serialVersionUID = -29238982928391L;
 
     public Lutemon(String name, String color, int attack, int defense, int experience, int maxHealth) {
         this.name = name;
