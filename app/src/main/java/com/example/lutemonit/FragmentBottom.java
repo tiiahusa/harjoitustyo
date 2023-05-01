@@ -49,18 +49,23 @@ public class FragmentBottom extends Fragment {
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_bottom, container, false);
 
+        //Link code and labels
         battle = v.findViewById(R.id.lblBattleLutemons);
         training = v.findViewById(R.id.lblTrainLutemons);
 
+        //Get battle and training -lists
         lutBattle = Storage.getInstance().getLutemonsFromBattle();
         lutTrain = Storage.getInstance().getLutemonsFromTraining();
+
+        // Get lutemons from battle list and add their names to string bat
         String bat = "";
         for (Lutemon lut: lutBattle) {
-            if (bat.length() > 0) { // Lisätään pilkku tuotteiden väliin
+            if (bat.length() > 0) {
                 bat += ", ";
             }
             bat += lut.getName();
         }
+        // Get lutemons from training list and add their names to string tra
         String tra = "";
         for (Lutemon lut: lutTrain) {
             if (tra.length() > 0) { // Lisätään pilkku tuotteiden väliin
@@ -68,10 +73,10 @@ public class FragmentBottom extends Fragment {
             }
             tra += lut.getName();
         }
+        // Add texts to layout labels
         if(bat.length() == 0) {
             battle.setText("Ei yhtään lutemonia taistelukentällä");
         } else battle.setText("Taisteluareenalla: " + bat);
-
         if(tra.length() == 0) {
             training.setText("Ei yhtään lutemonia treenissä");
         } else training.setText("Treenikentällä: " + tra);

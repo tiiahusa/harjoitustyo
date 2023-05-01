@@ -13,7 +13,7 @@ public class TabPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-
+        // Set right fragment to the fragment area
         switch (position) {
             case 0:
                 return new FragmentHomeList();

@@ -36,7 +36,6 @@ public class BattleActivity extends AppCompatActivity {
     private int percentA, percentB;
     private Lutemon first, second;
     String mapText, fightText;
-    BattleStorage battleStorage;
     CountDownTimer timer;
     private boolean timerrun;
     private int round;
@@ -52,7 +51,6 @@ public class BattleActivity extends AppCompatActivity {
         //Get Lutemons from storage
         storage = Storage.getInstance();
         lutemons = storage.getLutemonsFromBattle();
-        battleStorage = BattleStorage.getInstance();
 
         // Link view-things to code
         rgFirst = findViewById(R.id.rgFirstLutemon);
@@ -236,8 +234,6 @@ public class BattleActivity extends AppCompatActivity {
                 Toast.makeText(context, "Valitse taistelukerroin Lutemonille 2!", Toast.LENGTH_LONG).show();
                 return; // If Radiogroup not checked, stop method and toast for user
         }
-
-        battleStorage.startNewBattle(); // Start Battle and clear recent battle from battlestorage
 
         // Set visibilities on / off
         SetBattleThings(false);

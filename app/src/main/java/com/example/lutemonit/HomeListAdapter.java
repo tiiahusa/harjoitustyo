@@ -34,14 +34,16 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull HomeListHolder holder, int position) { // Set card item's texts and image
+        // Get lutemon from items-list
         Lutemon lutemon = items.get(position);
+        // Link code to layout things
         holder.pic.setImageResource(lutemon.getPic());
         holder.name.setText(lutemon.getName() + "  (" + lutemon.getColor() + ")");
         holder.attack.setText("Taistelupisteet: " + lutemon.getAttack());
         holder.defense.setText("Puolustuspisteet: " + lutemon.getDefense());
         holder.experience.setText("Kokemuspisteet: " + lutemon.getExperience());
         holder.health.setText("Elämä: " + lutemon.getHealth() + "/" + lutemon.getMaxHealth());
-        System.out.println(lutemon.getName() + lutemon.getAttack() + lutemon.getDefense());
+        //System.out.println(lutemon.getName() + lutemon.getAttack() + lutemon.getDefense());
 
         // Add click-listener to Go To Battle -button
         holder.battle.setOnClickListener(view -> {

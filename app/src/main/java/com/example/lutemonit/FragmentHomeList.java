@@ -35,32 +35,12 @@ public class FragmentHomeList extends Fragment {
     public FragmentHomeList() {
         // Required empty public constructor
     }
-
-    //public static FragmentHomeList newInstance(String param1, String param2) {
-
-        /*/
-        FragmentHomeList fragment = new FragmentHomeList();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }/*/
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             v = inflater.inflate(R.layout.fragment_home_list, container, false);
 
-            recyclerView = v.findViewById(R.id.recyclerview);
+            recyclerView = v.findViewById(R.id.recyclerview); // link code to recyclerview
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext())); // set it linearlayoutmanager
 
             list = Storage.getInstance().getLutemonsFromHome(); // Create list or get created one

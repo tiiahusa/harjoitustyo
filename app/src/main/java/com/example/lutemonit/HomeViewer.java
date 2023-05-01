@@ -12,24 +12,24 @@ public class HomeViewer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homeview);
 
-        // Kiinnitetään tablayout ja fragmentArea koodiin
+        // Link code to layout things
         TabLayout tablayout = findViewById(R.id.tabLayout);
         ViewPager2 fragmentArea = findViewById(R.id.fragmentArea);
-
+        // Create new fragment
         Fragment fragment = new FragmentBottom();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentFrame, fragment).commit();
 
-        //Luodaan uusi Tabpageradapter olio
+        // Create new adapter
         TabPagerAdapter tabPagerAdapter = new TabPagerAdapter(this);
-        //Kiinnitetään se fragment-areaan
+        // add it to the fragment area
         fragmentArea.setAdapter(tabPagerAdapter);
 
 
-        // ClickListener Tablayoutille
+        // ClickListener to tbalayout
         tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                //Asetetaan fragmentiin oikea "tab-positio"
+                //Set right tab-position to the fragment
                 fragmentArea.setCurrentItem(tab.getPosition());
                 Fragment fragment = new FragmentBottom();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentFrame, fragment).commit();
@@ -45,7 +45,7 @@ public class HomeViewer extends AppCompatActivity {
 
             }
         });
-        // Asetetaan tabien "alaviivan" siirtyminen tabien vaihdon aikana
+        // Set tabs underline to move right place when tab selected
         fragmentArea.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);

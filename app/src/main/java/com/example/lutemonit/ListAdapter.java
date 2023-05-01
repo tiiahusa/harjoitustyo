@@ -40,7 +40,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         holder.defense.setText("Puolustuspisteet: " + lutemon.getDefense());
         holder.experience.setText("Kokemuspisteet: " + lutemon.getExperience());
         holder.health.setText("Elämä: " + lutemon.getHealth() + "/" + lutemon.getMaxHealth());
-        System.out.println(lutemon.getName() + lutemon.getAttack() + lutemon.getDefense());
+        //System.out.println(lutemon.getName() + lutemon.getAttack() + lutemon.getDefense());
 
         // Add click-listener to Go To Battle -button
         holder.battle.setOnClickListener(view -> {
@@ -50,9 +50,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
             // Try add it to the battle area
             boolean x = Storage.getInstance().setLutemonToBattle(lut);
             if(x) { // if Success
-                //Toast.makeText(context,"Lutemon " + lutemon.getName() + " lisätty taisteluareenalle!",Toast.LENGTH_LONG).show();
                 notifyItemRemoved(pos);
-            } //else Toast.makeText(context, "Taisteluareena täynnä, lutemonia ei lisätty!", Toast.LENGTH_LONG).show(); //Not success
+            }
         });
         // Add click-listener to Go To Training -button
         holder.training.setOnClickListener(view -> {
@@ -62,9 +61,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
             // Try add it to the battle area
             boolean x = Storage.getInstance().setLutemonToTraining(lut);
             if(x) { // if Success
-                //Toast.makeText(context,"Lutemon " + lutemon.getName() + " lähti treeneihin!",Toast.LENGTH_LONG).show();
                 notifyItemRemoved(pos);
-            } //else Toast.makeText(context, "Treenisali täynnä, lutemoni " + lutemon.getName() + " jäi kotia ihmettelemään!", Toast.LENGTH_LONG).show(); //Not success
+            }
         });
 
     }

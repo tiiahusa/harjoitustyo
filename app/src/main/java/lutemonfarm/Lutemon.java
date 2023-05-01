@@ -134,6 +134,7 @@ public class Lutemon {
     }
 
     public boolean checkLutemonFromTrainingArea () {
+        // Check training area lutemonn training times
         long timeNow = System.currentTimeMillis();
             if(timeNow - trainingTime > 60000) {
                 return true;

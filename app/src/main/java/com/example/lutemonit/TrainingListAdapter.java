@@ -36,14 +36,14 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListHolder
 
     @Override
     public void onBindViewHolder(@NonNull TrainingListHolder holder, int position) { // Set card item's texts and image
+        // set name and experience to the lutemon card
         holder.name.setText(items.get(position).getName() + "  (" + items.get(position).getColor() + ")");
         holder.experience.setText("Kokemuspisteet: " + items.get(position).getExperience());
-        //holder.time.setText("Lutemoni ollut treenissä: " + (System.currentTimeMillis() - items.get(position).getTrainingTime())/60000 + " min");
         if((System.currentTimeMillis() - items.get(position).getTrainingTime())/60000 >= 1) {
             trainingText = "Lutemonin treeni valmis!";
         } else trainingText = "Treeni kesken!!";
         holder.time.setText(trainingText);
-        System.out.println(items.get(position).getName() + items.get(position).getAttack() + items.get(position).getDefense());
+        //System.out.println(items.get(position).getName() + items.get(position).getAttack() + items.get(position).getDefense());
 
         // Add click-listener to Go To Training -button
         holder.train.setOnClickListener(view -> {

@@ -51,16 +51,15 @@ public class FragmentFacts extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_facts, container, false);
 
+        // Link code to layout labels
         lblWins = v.findViewById(R.id.lblWins);
         lblLosses = v.findViewById(R.id.lblLosses);
         lblStatic = v.findViewById(R.id.lblFacts);
 
         storage = Storage.getInstance();
 
-        checkStatics();
-        updateScreen();
-
-
+        checkStatics(); // Check lutemons statics
+        updateScreen(); // Update layout labels
 
         // Inflate the layout for this fragment
         return v;
@@ -69,12 +68,13 @@ public class FragmentFacts extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        checkStatics();
-        updateScreen();
+        checkStatics(); // Check lutemons statics
+        updateScreen(); // Update layout labels
     }
 
     private void checkStatics() {
 
+        // Get lutemons from storage and clear all "apumuuttujat"
         lutemons = storage.getLutemons();
         mostWins.clear();
         mostLosses.clear();
@@ -85,7 +85,7 @@ public class FragmentFacts extends Fragment {
 
         // Went throw lutemons HashMap
         lutemons.forEach((key, lut) -> {
-            // Update most wins -lutemon if needed
+            // Update most wins -lutemon if needed and also most loss -lutemon
             if (maxWin == lut.getWins()) {
                 mostWins.add(lut); }
             if(maxWin < lut.getWins()) {
@@ -100,6 +100,7 @@ public class FragmentFacts extends Fragment {
                 mostLosses.clear();
                 mostLosses.add(lut);
             }
+            // Add lutemon and his statics to statictext - string
             staticText += lut.getName() + " on voittanut " + lut.getWins() + " kertaa ja hävinnyt " + lut.getLosses() + " kertaa\n";
             i += lut.getWins();
             i += lut.getLosses();

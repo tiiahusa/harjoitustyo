@@ -44,9 +44,6 @@ public class MainActivity extends AppCompatActivity {
         btnBattle.setText("Taistelutanner (" + storage.getLutemonsFromBattle().size() + ")");
         btnHome.setText("Lutemonikoti (" + storage.getLutemonsFromHome().size() + ")");
         btnTraining.setText("Treenikämppä (" + storage.getLutemonsFromTraining().size() + ")");
-
-        // Check training area and sen fulltime -trainers to home
-        //storage.checkTrainingArea();
     }
 
     public void AddLutemon(View view) {
