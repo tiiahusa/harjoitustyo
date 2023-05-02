@@ -53,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
         refreshButtonsText();
     }
 
+    public void saveLutemons(View view) {
+        Storage.getInstance().saveLutemons(context);
+    }
+
     @Override // Refresh buttons text
     protected void onPostResume() {
         super.onPostResume();
