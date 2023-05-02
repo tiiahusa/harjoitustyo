@@ -19,11 +19,12 @@ import lutemonfarm.Storage;
 
 public class FragmentFacts extends Fragment {
 
-    TextView lblWins, lblLosses, lblStatic;
+    TextView lblWins, lblLosses, lblStatic, lblTrain;
     Storage storage;
     ArrayList<Lutemon> mostWins = new ArrayList<>();
     ArrayList<Lutemon> mostLosses = new ArrayList<>();
-    private String staticText, startText, winText, lossText;
+    ArrayList<Lutemon> mostTrains= new ArrayList<>();
+    private String staticText, startText, winText, lossText, trainText;
     private int i, maxWin, maxLoss;
     private HashMap<Integer, Lutemon> lutemons = new HashMap<>();
 
@@ -105,7 +106,8 @@ public class FragmentFacts extends Fragment {
                 mostLosses.add(lut);
             }
             // Add lutemon and his statics to statictext - string
-            staticText += lut.getName() + " on voittanut " + lut.getWins() + " kertaa ja hävinnyt " + lut.getLosses() + " kertaa\n";
+            staticText += lut.getName() + " on voittanut " + lut.getWins() + " kertaa ja hävinnyt "
+                    + lut.getLosses() + " kertaa, treenejä on ollut " + lut.getTrainingdays() + " kappaletta \n";
             i += lut.getWins();
             i += lut.getLosses();
         });

@@ -93,6 +93,9 @@ public class Lutemon implements Serializable {
     public int getDefense() {
         return defense;
     }
+    public int getTrainingdays() {
+        return trainingdays;
+    }
 
     public int getExperience() {
         return experience;
