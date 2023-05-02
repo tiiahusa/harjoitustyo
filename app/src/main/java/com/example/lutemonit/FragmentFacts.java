@@ -76,6 +76,10 @@ public class FragmentFacts extends Fragment {
 
         // Get lutemons from storage and clear all "apumuuttujat"
         lutemons = storage.getLutemons();
+        /*/System.out.println(lutemons);
+        System.out.println(Storage.getInstance().getLutemonsFromBattle());
+        System.out.println(Storage.getInstance().getLutemonsFromTraining());
+        System.out.println(Storage.getInstance().getLutemonsFromHome());/*/
         mostWins.clear();
         mostLosses.clear();
         staticText = "";

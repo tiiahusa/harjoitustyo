@@ -36,7 +36,7 @@ public class Storage {
         }
         return storage;
     }
-    public void AddLutemon(Lutemon lutemon) { //Add new lutemon to HashMap
+    public void addLutemon(Lutemon lutemon) { //Add new lutemon to HashMap
         lutemons.put(lutemon.getId(), lutemon);
         home.add(lutemon);
         //System.out.println(lutemons);

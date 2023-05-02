@@ -67,7 +67,7 @@ public class AddNewLutemon extends AppCompatActivity {
                             break;
 
                 }
-                storage.AddLutemon(lutemon); // Add lutemon to storage
+                storage.addLutemon(lutemon); // Add lutemon to storage
                 // Go back to main page
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);

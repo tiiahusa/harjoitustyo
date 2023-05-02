@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 public class Lutemon implements Serializable {
 
     protected String name, color;
     protected int attack, defense, experience, health, maxHealth, id, wins, losses, statement, pic, trainingdays;
     protected long trainingTime;
-    private static int idCounter = 1;
     private static final long serialVersionUID = -29238982928391L;
 
     public Lutemon(String name, String color, int attack, int defense, int experience, int maxHealth) {
@@ -70,7 +70,8 @@ public class Lutemon implements Serializable {
     }
 
     private int getNewId() { // Give lutemons id and grow for one every time
-        return idCounter++;
+        Random random = new Random(); // Create random generator
+        return random.nextInt(900000000); // return random number from factor list
     }
 
     public int getId() { // Get lutemons id
