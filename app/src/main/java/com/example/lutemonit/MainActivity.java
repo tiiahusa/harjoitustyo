@@ -16,13 +16,13 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnHome, btnTraining, btnBattle;
     Storage storage;
-    Context context;
+    private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context = MainActivity.this;
+        context = getApplicationContext();
 
         // Link Buttons to code
         btnBattle = findViewById(R.id.btnBattle);
@@ -32,21 +32,31 @@ public class MainActivity extends AppCompatActivity {
         // Tässä välissä lataa Lutemonit tiedostosta
 
 
+        refreshButtonsText();
+
+
+    }
+    public static Context getAppContext() {
+        return MainActivity.context;
+    }
+
+    public void refreshButtonsText() {
         // Refresh button's text
         storage = Storage.getInstance();
         btnBattle.setText("Taistelutanner (" + storage.getLutemonsFromBattle().size() + ")");
         btnHome.setText("Lutemonikoti (" + storage.getLutemonsFromHome().size() + ")");
         btnTraining.setText("Treenikämppä (" + storage.getLutemonsFromTraining().size() + ")");
+    }
 
-
+    public void loadLutemons(View view) {
+        Storage.getInstance().loadLutemons();
+        refreshButtonsText();
     }
 
     @Override // Refresh buttons text
     protected void onPostResume() {
         super.onPostResume();
-        btnBattle.setText("Taistelutanner (" + storage.getLutemonsFromBattle().size() + ")");
-        btnHome.setText("Lutemonikoti (" + storage.getLutemonsFromHome().size() + ")");
-        btnTraining.setText("Treenikämppä (" + storage.getLutemonsFromTraining().size() + ")");
+        refreshButtonsText();
     }
 
     public void AddLutemon(View view) {

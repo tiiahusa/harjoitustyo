@@ -5,6 +5,8 @@ import android.os.Build;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.lutemonit.MainActivity;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -25,7 +27,7 @@ public class Storage {
 
     private Storage () { // Singleton setting, thats why this is private method
         FILENAME = "lutemons.data";
-        context = context.getApplicationContext();
+        context = MainActivity.getAppContext();
     }
 
     public static Storage getInstance () { //If storage is null, create new one. Return storage
@@ -37,7 +39,8 @@ public class Storage {
     public void AddLutemon(Lutemon lutemon) { //Add new lutemon to HashMap
         lutemons.put(lutemon.getId(), lutemon);
         home.add(lutemon);
-        //saveLutemons(context);
+        //System.out.println(lutemons);
+        saveLutemons(context);
     } // Add new lutemon to list
     
     public ArrayList<Lutemon> getLutemonsFromHome() {
@@ -101,14 +104,16 @@ public class Storage {
             userWriter.writeObject(lutemons);
             // close file
             userWriter.close();
-            Toast.makeText(context, "Käyttäjä tallennettu", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Lutemoni tallennettu", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             // If writing to file not success
-            Toast.makeText(context, "Käyttäjän tallentaminen ei onnistunut" + e, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Lutemonin tallentaminen ei onnistunut" + e, Toast.LENGTH_LONG).show();
         }
+
+        //System.out.println(lutemons);
     }
 
-    public void loadLutemons(Context context) {
+    public void loadLutemons() {
         // try write user to file
         try {
             // create object input stream name users.data
@@ -117,18 +122,41 @@ public class Storage {
             lutemons = (HashMap<Integer, Lutemon>) lutReader.readObject();
             // close file
             lutReader.close();
+            Toast.makeText(context, "Lutemonit ladattu", Toast.LENGTH_LONG).show();
+
+            // Set lutemons to areas
+            battle.clear();
+            training.clear();
+            home.clear();
+            lutemons.forEach((id, lut) -> {
+                switch (lut.getStatement()) {
+                    case 0:
+                        home.add(lut);
+                        break;
+                    case 1:
+                        training.add(lut);
+                        break;
+                    case 2:
+                        battle.add(lut);
+                        break;
+                    default:
+                        home.add(lut);
+                        lut.setStatement(0);
+                        break;
+                }
+            });
 
         } catch (FileNotFoundException e) { // If file not found
             Toast.makeText(context, "Lutemonilistaa ei löytynyt!", Toast.LENGTH_LONG).show();
-            System.out.println("Lutemonien lataaminen ei onnistunut!");
+            //System.out.println("Lutemonien lataaminen ei onnistunut!");
             e.printStackTrace();
         } catch (IOException e) { // IO problem
             Toast.makeText(context, "Lutemonien lataaminen ei onnistunut!", Toast.LENGTH_LONG).show();
-            System.out.println("Lutemonien lataaminen ei onnistunut!");
+            //System.out.println("Lutemonien lataaminen ei onnistunut!");
             e.printStackTrace();
         } catch (ClassNotFoundException e) { // Class problem
             Toast.makeText(context, "Lutemonien lataaminen ei onnistunut!", Toast.LENGTH_LONG).show();
-            System.out.println("Lutemonien lataaminen ei onnistunut!");
+            //System.out.println("Lutemonien lataaminen ei onnistunut!");
             e.printStackTrace();
         }
 

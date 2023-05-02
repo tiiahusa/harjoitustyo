@@ -20,7 +20,6 @@ public class TabPagerAdapter extends FragmentStateAdapter {
             case 1:
                 return new FragmentStatics();
             case 2:
-
                 return new FragmentFacts();
             default:
                 return new FragmentHomeList();

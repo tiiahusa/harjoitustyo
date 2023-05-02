@@ -56,7 +56,7 @@ public class Lutemon implements Serializable {
         this.statement = statement;
     }
 
-    protected int getStatement() {
+    public int getStatement() {
         return statement;
     }
 
